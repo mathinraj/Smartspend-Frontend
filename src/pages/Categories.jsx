@@ -1,4 +1,3 @@
-import { PieChart } from '../components/PieChart';
 
 function Categories() {
   const data = [
@@ -11,7 +10,6 @@ function Categories() {
   return (
     <div>
       <h1>Categories</h1>
-      <PieChart data={data} />
       {/* Add category management UI here */}
     </div>
   );

@@ -1,17 +1,19 @@
+
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-function Home() {
-  const navigate = useNavigate();
-  return (
-    <>
-      <h1>Welcome to Expense Tracker !!</h1>
-      <button type="button" class="btn btn-success" data-mdb-ripple-init onClick={() => navigate('/login')}>Login →</button>
+const HomePage = () => {
+    return (
+        <div className="container">
+            <div className="d-flex align-items-center justify-content-center vh-100">
+                <div className="text-center">
+                    <h1>Welcome to SmartSpend !</h1>
+                    <p>Manage your expenses efficiently.</p>
+                    <Link to="/login" className="btn btn-success">Login <i class="fa-solid fa-right-to-bracket"></i></Link>
+                </div>
+            </div>
+        </div>
+    );
+};
 
-    </>
-    
-
-  )
-}
-
-export default Home
+export default HomePage;

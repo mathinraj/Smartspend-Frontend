@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import ExpenseForm from '../components/ExpenseForm';
 
 function Transactions() {
   const [transactions, setTransactions] = useState([]);

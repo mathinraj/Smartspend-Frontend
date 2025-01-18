@@ -1,4 +1,4 @@
-import PieChart from '../components/PieChart';
+
 import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
@@ -14,7 +14,6 @@ function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-      <PieChart data={data} />
       <button onClick={() => navigate('/add-expense')}>+</button>
     </div>
   );
