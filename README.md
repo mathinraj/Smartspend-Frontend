@@ -1,8 +1,26 @@
-# React + Vite
+## SmartSpend 💼💰
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A comprehensive expense tracker built with Spring Boot, MySQL, and React.
 
-Currently, two official plugins are available:
+SmartSpend helps you manage your finances effortlessly by tracking your daily expenses and categorizing them. Built as a full-stack application, it leverages Spring Boot for the backend, MySQL for database management, and will soon feature a React frontend for a seamless user experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+#### **Features**
+- 📝 Add, Edit, and Delete Expenses
+- 📊 Categorize Expenses (Food, Travel, Housing, etc.)
+- 📅 Track Spending Over Time
+- ✅ CRUD Operations with a RESTful API
+- 🧪 Unit Testing using JUnit
+
+#### **Tech Stack**
+- **Backend**: Spring Boot, Hibernate, MySQL
+- **Frontend**: React
+- **Build Tool**: Maven
+- **Testing**: JUnit
+
+####  **Setup Instructions**
+- Clone the repository:
+`git clone https://github.com/mathinraj/Smartspend`
+
+- Configure your `application.properties` with MySQL credentials.
+- Run the application using Maven:
+`mvn spring-boot:run`
