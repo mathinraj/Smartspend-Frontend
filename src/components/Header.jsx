@@ -1,14 +1,49 @@
-// src/components/Header.jsx
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
-  return (
-    <header className="bg-dark text-white p-3">
-      <div className="container">
-        <h1>SmartSpend</h1>
-      </div>
-    </header>
-  );
+    const navigate = useNavigate();
+    const username = localStorage.getItem('username');
+
+    const handleLogout = () => {
+        localStorage.removeItem('role');
+        localStorage.removeItem('username');
+        navigate('/login');
+    };
+
+    return (
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className="container-fluid">
+                <Link className="navbar-brand" to="/">
+                    Expense Tracker
+                </Link>
+                <div className="collapse navbar-collapse" id="navbarNav">
+                    <ul className="navbar-nav me-auto">
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/">
+                                Home
+                            </Link>
+                        </li>
+                        {username && (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/dashboard">
+                                    Dashboard
+                                </Link>
+                            </li>
+                        )}
+                    </ul>
+                    {username && (
+                        <div className="d-flex">
+                            <span className="navbar-text me-3">Welcome, {username}!</span>
+                            <button className="btn btn-outline-danger" onClick={handleLogout}>
+                                Logout <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </nav>
+    );
 };
 
 export default Header;
