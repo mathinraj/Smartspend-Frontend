@@ -1,14 +1,25 @@
 // src/components/Expenses/ExpenseForm.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../../services/api'; // Import the Axios instance
 
-const ExpenseForm = ({ onSubmit, onCancel }) => {
-  const [amount, setAmount] = useState('');
-  const [description, setDescription] = useState('');
-  const [categoryId, setCategoryId] = useState('');
-  const [userId, setUserId] = useState('');
-  const [date, setDate] = useState('');
+const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
+  const [amount, setAmount] = useState(expense ? expense.amount : '');
+  const [description, setDescription] = useState(expense ? expense.description : '');
+  const [categoryId, setCategoryId] = useState(expense ? expense.categoryId : '');
+  const [userId, setUserId] = useState(expense ? expense.userId : '');
+  const [date, setDate] = useState(expense ? expense.date : '');
   const [error, setError] = useState('');
+
+  // Pre-fill the form if editing an existing expense
+  useEffect(() => {
+    if (expense) {
+      setAmount(expense.amount);
+      setDescription(expense.description);
+      setCategoryId(expense.categoryId); // Ensure categoryId is set
+      setUserId(expense.userId); // Ensure userId is set
+      setDate(expense.date);
+    }
+  }, [expense]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,29 +40,37 @@ const ExpenseForm = ({ onSubmit, onCancel }) => {
     };
 
     try {
-      // Make a POST request to create the expense
-      const response = await api.post('/expenses/add', expenseData);
+      let response;
+      if (expense) {
+        // Update an existing expense
+        response = await api.put(`/expenses/update/${expense.id}`, expenseData);
+      } else {
+        // Create a new expense
+        response = await api.post('/expenses/add', expenseData);
+      }
 
-      // Call the onSubmit callback with the created expense
+      // Call the onSubmit callback with the created/updated expense
       onSubmit(response.data);
 
       // Clear the form fields
-      setAmount('');
-      setDescription('');
-      setCategoryId('');
-      setUserId('');
-      setDate('');
+      if (!expense) {
+        setAmount('');
+        setDescription('');
+        setCategoryId('');
+        setUserId('');
+        setDate('');
+      }
       setError('');
     } catch (err) {
-      setError('Failed to create expense. Please try again.');
-      console.error('Error creating expense:', err);
+      setError(expense ? 'Failed to update expense. Please try again.' : 'Failed to create expense. Please try again.');
+      console.error('Error:', err);
     }
   };
 
   return (
     <div className="card mb-4">
       <div className="card-body">
-        <h5 className="card-title">Add Expense</h5>
+        <h5 className="card-title">{expense ? 'Edit Expense' : 'Add Expense'}</h5>
         {error && <div className="alert alert-danger">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -110,7 +129,7 @@ const ExpenseForm = ({ onSubmit, onCancel }) => {
             />
           </div>
           <button type="submit" className="btn btn-primary me-2">
-            Add Expense
+            {expense ? 'Update' : 'Add'}
           </button>
           <button type="button" className="btn btn-secondary" onClick={onCancel}>
             Cancel
