@@ -1,6 +1,6 @@
 // src/components/Expenses/ExpenseForm.jsx
 import React, { useState, useEffect } from 'react';
-import api from '../../services/api'; // Import the Axios instance
+import api from '../../services/api';
 
 const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
   const [amount, setAmount] = useState(expense ? expense.amount : '');
@@ -15,8 +15,8 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
     if (expense) {
       setAmount(expense.amount);
       setDescription(expense.description);
-      setCategoryId(expense.categoryId); // Ensure categoryId is set
-      setUserId(expense.userId); // Ensure userId is set
+      setCategoryId(expense.categoryId);
+      setUserId(expense.userId);
       setDate(expense.date);
     }
   }, [expense]);
@@ -27,6 +27,21 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
     // Validate input fields
     if (!amount || !description || !categoryId || !userId || !date) {
       setError('All fields are required.');
+      return;
+    }
+
+    if (isNaN(amount) || amount <= 0) {
+      setError('Amount must be a positive number.');
+      return;
+    }
+
+    if (isNaN(categoryId) || categoryId <= 0) {
+      setError('Category ID must be a positive number.');
+      return;
+    }
+
+    if (isNaN(userId) || userId <= 0) {
+      setError('User ID must be a positive number.');
       return;
     }
 
@@ -62,7 +77,7 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
       }
       setError('');
     } catch (err) {
-      setError(expense ? 'Failed to update expense. Please try again.' : 'Failed to create expense. Please try again.');
+      setError(err.message || 'Failed to save expense. Please try again.');
       console.error('Error:', err);
     }
   };

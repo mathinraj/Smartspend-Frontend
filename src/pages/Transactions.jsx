@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import ExpenseForm from '../components/Expenses/ExpenseForm';
 import SideMenu from '../components/SideMenu';
-import api from '../services/api'; // Import the Axios instance
+import api from '../services/api';
 
 const TransactionsPage = () => {
-  const [expenses, setExpenses] = useState([]); // State to store expenses
-  const [showForm, setShowForm] = useState(false); // State to toggle the form
-  const [editingExpense, setEditingExpense] = useState(null); // State to track the expense being edited
-  const [loading, setLoading] = useState(true); // State to track loading status
-  const [error, setError] = useState(''); // State to store error messages
+  const [expenses, setExpenses] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editingExpense, setEditingExpense] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   // Fetch expenses from the backend when the component mounts
   useEffect(() => {
@@ -18,8 +18,7 @@ const TransactionsPage = () => {
         const response = await api.get('/expenses/get/all');
         setExpenses(response.data);
       } catch (err) {
-        setError('Failed to fetch expenses. Please try again later.');
-        console.error('Error fetching expenses:', err);
+        setError(err.message || 'Failed to fetch expenses. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -33,28 +32,21 @@ const TransactionsPage = () => {
     if (editingExpense) {
       // Update the existing expense in the list
       setExpenses(expenses.map((e) => (e.id === expense.id ? expense : e)));
-      setEditingExpense(null); // Clear the editing state
+      setEditingExpense(null);
     } else {
       // Add the new expense to the list
       setExpenses([...expenses, expense]);
     }
-    setShowForm(false); // Hide the form
-  };
-
-  // Handle editing an expense
-  const handleEdit = (expense) => {
-    setEditingExpense(expense); // Set the expense to be edited
-    setShowForm(true); // Show the form
+    setShowForm(false);
   };
 
   // Handle deleting an expense
   const handleDelete = async (id) => {
     try {
-      await api.delete(`/expenses/delete/${id}`); // Send a DELETE request
-      setExpenses(expenses.filter((e) => e.id !== id)); // Remove the expense from the list
+      await api.delete(`/expenses/delete/${id}`);
+      setExpenses(expenses.filter((e) => e.id !== id));
     } catch (err) {
-      setError('Failed to delete expense. Please try again.');
-      console.error('Error deleting expense:', err);
+      setError(err.message || 'Failed to delete expense. Please try again.');
     }
   };
 
@@ -72,13 +64,15 @@ const TransactionsPage = () => {
             </div>
           ) : error ? (
             <div className="alert alert-danger">{error}</div>
+          ) : expenses.length === 0 ? (
+            <div className="alert alert-info">No expenses found.</div>
           ) : (
             <>
               <button
                 className="btn btn-primary mb-3"
                 onClick={() => {
-                  setEditingExpense(null); // Clear the editing state
-                  setShowForm(!showForm); // Toggle the form
+                  setEditingExpense(null);
+                  setShowForm(!showForm);
                 }}
               >
                 {showForm ? 'Hide Form' : 'Add Expense'}
@@ -88,8 +82,8 @@ const TransactionsPage = () => {
                   expense={editingExpense}
                   onSubmit={handleSubmit}
                   onCancel={() => {
-                    setShowForm(false); // Hide the form
-                    setEditingExpense(null); // Clear the editing state
+                    setShowForm(false);
+                    setEditingExpense(null);
                   }}
                 />
               )}
