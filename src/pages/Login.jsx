@@ -86,27 +86,29 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
-      // Make a POST request to the login endpoint
+      console.log('Attempting login...'); // Debug log
       const response = await api.post('/login', { username, password });
-
+  
+      console.log('Login response:', response); // Debug log
+  
       // Check if the response is successful
       if (response.status === 200) {
-        const user = response.data;
-
-        // Store user details in localStorage
-        localStorage.setItem('id', user.id);
-        localStorage.setItem('username', user.username);
-        localStorage.setItem('role', user.role);
-
-        // Redirect to the dashboard
-        navigate('/dashboard');
+        console.log('Login successful. Storing credentials...'); // Debug log
+        localStorage.setItem('username', username);
+        localStorage.setItem('password', password);
+        localStorage.setItem('role', response.data.role); // Store the role from the response
+  
+        console.log('Redirecting to dashboard...'); // Debug log
+        navigate('/dashboard'); // Redirect to the dashboard
+      } else {
+        console.log('Unexpected response status:', response.status); // Debug log
+        setError('Login failed. Please try again.');
       }
     } catch (err) {
-      // Handle errors (e.g., invalid credentials)
+      console.error('Login failed:', err); // Debug log
       setError('Invalid username or password');
-      console.error('Login failed:', err);
     }
   };
 

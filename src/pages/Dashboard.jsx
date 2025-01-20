@@ -13,8 +13,8 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        // Make a GET request to fetch all expenses
         const response = await api.get('/expenses/get/all');
+        console.log('Response from backend:', response.data); // Log the response
         setExpenses(response.data); // Set the fetched expenses in the state
       } catch (err) {
         setError('Failed to fetch expenses. Please try again later.'); // Handle errors
@@ -23,7 +23,7 @@ const DashboardPage = () => {
         setLoading(false); // Set loading to false after the request completes
       }
     };
-
+  
     fetchExpenses(); // Call the fetch function
   }, []);
 
