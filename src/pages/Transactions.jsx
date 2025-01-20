@@ -1,67 +1,91 @@
+// src/pages/Transactions.jsx
 import React, { useState, useEffect } from 'react';
-import TransactionFilter from '../components/Transactions/TransactionFilter';
-import TransactionList from '../components/Transactions/TransactionList';
-import Header from '../components/Common/Header';
+import ExpenseForm from '../components/Expenses/ExpenseForm';
 import SideMenu from '../components/SideMenu';
-import Footer from '../components/Common/Footer';
+import api from '../services/api'; // Import the Axios instance
 
 const TransactionsPage = () => {
-    const [transactions, setTransactions] = useState([]);
-    const [filteredTransactions, setFilteredTransactions] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [expenses, setExpenses] = useState([]); // State to store expenses
+  const [showForm, setShowForm] = useState(false); // State to toggle the form
+  const [loading, setLoading] = useState(true); // State to track loading status
+  const [error, setError] = useState(''); // State to store error messages
 
-    useEffect(() => {
-        // Simulate API call
-        setTimeout(() => {
-            setTransactions([
-                { id: 1, date: '2023-10-01', category: 'Food', amount: 50, description: 'Groceries' },
-                { id: 2, date: '2023-10-02', category: 'Transport', amount: 20, description: 'Bus fare' },
-                { id: 3, date: '2023-10-03', category: 'Entertainment', amount: 30, description: 'Movie tickets' },
-            ]);
-            setFilteredTransactions([
-                { id: 1, date: '2023-10-01', category: 'Food', amount: 50, description: 'Groceries' },
-                { id: 2, date: '2023-10-02', category: 'Transport', amount: 20, description: 'Bus fare' },
-                { id: 3, date: '2023-10-03', category: 'Entertainment', amount: 30, description: 'Movie tickets' },
-            ]);
-            setLoading(false);
-        }, 1000);
-    }, []);
-
-    const handleFilter = ({ category, startDate, endDate }) => {
-        const filtered = transactions.filter((transaction) => {
-            return (
-                (category === '' || transaction.category.toLowerCase().includes(category.toLowerCase())) &&
-                (startDate === '' || transaction.date >= startDate) &&
-                (endDate === '' || transaction.date <= endDate)
-            );
-        });
-        setFilteredTransactions(filtered);
+  // Fetch expenses from the backend when the component mounts
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const response = await api.get('/expenses/get/all');
+        setExpenses(response.data);
+      } catch (err) {
+        setError('Failed to fetch expenses. Please try again later.');
+        console.error('Error fetching expenses:', err);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const handleClearFilter = () => {
-        setFilteredTransactions(transactions); // Reset to the original transactions
-    };
+    fetchExpenses();
+  }, []);
 
-    return (
-        <div className="d-flex flex-column min-vh-100">
-            <div className="d-flex flex-grow-1">
-                <SideMenu />
-                <div className="flex-grow-1 p-4">
-                    <h1>Transactions</h1>
-                    <TransactionFilter onFilter={handleFilter} onClear={handleClearFilter} />
-                    {loading ? (
-                        <div className="text-center">
-                            <div className="spinner-border text-primary" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    ) : (
-                        <TransactionList transactions={filteredTransactions} />
-                    )}
-                </div>
+  // Handle form submission
+  const handleAddExpense = (newExpense) => {
+    setExpenses([...expenses, newExpense]); // Add the new expense to the list
+    setShowForm(false); // Hide the form
+  };
+
+  return (
+    <div className="d-flex flex-column min-vh-100">
+      <div className="d-flex flex-grow-1">
+        <SideMenu />
+        <div className="flex-grow-1 p-4">
+          <h1>Transactions</h1>
+          {loading ? (
+            <div className="text-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
             </div>
+          ) : error ? (
+            <div className="alert alert-danger">{error}</div>
+          ) : (
+            <>
+              <button
+                className="btn btn-primary mb-3"
+                onClick={() => setShowForm(!showForm)}
+              >
+                {showForm ? 'Hide Form' : 'Add Expense'}
+              </button>
+              {showForm && (
+                <ExpenseForm onSubmit={handleAddExpense} onCancel={() => setShowForm(false)} />
+              )}
+              <div className="table-responsive">
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Category</th>
+                      <th>Amount</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {expenses.map((expense) => (
+                      <tr key={expense.id}>
+                        <td>{expense.date}</td>
+                        <td>{expense.categoryName}</td>
+                        <td>${expense.amount}</td>
+                        <td>{expense.description}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default TransactionsPage;
