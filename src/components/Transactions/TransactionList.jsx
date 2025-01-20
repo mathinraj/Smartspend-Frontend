@@ -17,7 +17,7 @@ const TransactionList = ({ transactions }) => {
                         <tr key={transaction.id}>
                             <td>{transaction.date}</td>
                             <td>{transaction.category}</td>
-                            <td>${transaction.amount}</td>
+                            <td>₹{transaction.amount}</td>
                             <td>{transaction.description}</td>
                         </tr>
                     ))}

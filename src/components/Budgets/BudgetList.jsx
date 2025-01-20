@@ -17,7 +17,7 @@ const BudgetList = ({ budgets, onEdit, onDelete }) => {
                     {budgets.map((budget) => (
                         <tr key={budget.id}>
                             <td>{budget.category}</td>
-                            <td>${budget.amount}</td>
+                            <td>₹{budget.amount}</td>
                             <td>{budget.startDate}</td>
                             <td>{budget.endDate}</td>
                             <td>

@@ -73,7 +73,7 @@ const TransactionsPage = () => {
                       <tr key={expense.id}>
                         <td>{expense.date}</td>
                         <td>{expense.categoryName}</td>
-                        <td>${expense.amount}</td>
+                        <td>₹{expense.amount}</td>
                         <td>{expense.description}</td>
                       </tr>
                     ))}
