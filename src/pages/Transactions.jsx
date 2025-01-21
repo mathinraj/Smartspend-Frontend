@@ -19,8 +19,12 @@ const TransactionsPage = () => {
     const fetchExpenses = async () => {
       try {
         const response = await api.get('/expenses/get/all');
-        setExpenses(response.data);
-        setFilteredExpenses(response.data); // Initialize filtered expenses
+        
+        // Sort expenses by date in descending order (latest first)
+        const sortedExpenses = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        setExpenses(sortedExpenses);
+        setFilteredExpenses(sortedExpenses); // Initialize filtered expenses
       } catch (err) {
         setError(err.message || 'Failed to fetch expenses. Please try again later.');
       } finally {
@@ -33,14 +37,22 @@ const TransactionsPage = () => {
 
   // Handle form submission (add or update)
   const handleSubmit = (expense) => {
+    let updatedExpenses;
+
     if (editingExpense) {
       // Update the existing expense in the list
-      setExpenses(expenses.map((e) => (e.id === expense.id ? expense : e)));
-      setEditingExpense(null);
+      updatedExpenses = expenses.map((e) => (e.id === expense.id ? expense : e));
     } else {
       // Add the new expense to the list
-      setExpenses([...expenses, expense]);
+      updatedExpenses = [...expenses, expense];
     }
+
+    // Sort the updated expenses by date in descending order
+    const sortedExpenses = updatedExpenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    setExpenses(sortedExpenses);
+    setFilteredExpenses(sortedExpenses); // Update filtered expenses
+    setEditingExpense(null);
     setShowForm(false);
   };
 
@@ -48,8 +60,15 @@ const TransactionsPage = () => {
   const handleDelete = async (id) => {
     try {
       await api.delete(`/expenses/delete/${id}`);
-      setExpenses(expenses.filter((e) => e.id !== id));
-      setFilteredExpenses(filteredExpenses.filter((e) => e.id !== id));
+      const updatedExpenses = expenses.filter((e) => e.id !== id);
+      const updatedFilteredExpenses = filteredExpenses.filter((e) => e.id !== id);
+
+      // Sort the updated expenses by date in descending order
+      const sortedExpenses = updatedExpenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+      const sortedFilteredExpenses = updatedFilteredExpenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      setExpenses(sortedExpenses);
+      setFilteredExpenses(sortedFilteredExpenses);
     } catch (err) {
       setError(err.message || 'Failed to delete expense. Please try again.');
     }
@@ -63,7 +82,11 @@ const TransactionsPage = () => {
       const matchesEndDate = endDate ? expense.date <= endDate : true;
       return matchesCategory && matchesStartDate && matchesEndDate;
     });
-    setFilteredExpenses(filtered);
+
+    // Sort filtered expenses by date in descending order
+    const sortedFilteredExpenses = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    setFilteredExpenses(sortedFilteredExpenses);
     setCurrentPage(1); // Reset to the first page after filtering
   };
 

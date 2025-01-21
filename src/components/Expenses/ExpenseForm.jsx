@@ -1,4 +1,3 @@
-// src/components/Expenses/ExpenseForm.jsx
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 
@@ -9,6 +8,28 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
   const [userId, setUserId] = useState(expense ? expense.userId : '');
   const [date, setDate] = useState(expense ? expense.date : '');
   const [error, setError] = useState('');
+
+  const [categories, setCategories] = useState([]); // State to store categories
+  const [users, setUsers] = useState([]); // State to store users
+
+  // Fetch categories and users when the component mounts
+  useEffect(() => {
+    const fetchCategoriesAndUsers = async () => {
+      try {
+        // Fetch categories
+        const categoriesResponse = await api.get('/category/get/all');
+        setCategories(categoriesResponse.data);
+
+        // Fetch users
+        const usersResponse = await api.get('/users/get/all');
+        setUsers(usersResponse.data);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      }
+    };
+
+    fetchCategoriesAndUsers();
+  }, []);
 
   // Pre-fill the form if editing an existing expense
   useEffect(() => {
@@ -32,16 +53,6 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
 
     if (isNaN(amount) || amount <= 0) {
       setError('Amount must be a positive number.');
-      return;
-    }
-
-    if (isNaN(categoryId) || categoryId <= 0) {
-      setError('Category ID must be a positive number.');
-      return;
-    }
-
-    if (isNaN(userId) || userId <= 0) {
-      setError('User ID must be a positive number.');
       return;
     }
 
@@ -111,26 +122,38 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="categoryId" className="form-label">Category ID</label>
-            <input
-              type="number"
+            <label htmlFor="categoryId" className="form-label">Category</label>
+            <select
               id="categoryId"
               className="form-control"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
               required
-            />
+            >
+              <option value="">Select a category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-3">
-            <label htmlFor="userId" className="form-label">User ID</label>
-            <input
-              type="number"
+            <label htmlFor="userId" className="form-label">User</label>
+            <select
               id="userId"
               className="form-control"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
               required
-            />
+            >
+              <option value="">Select a user</option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.username}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-3">
             <label htmlFor="date" className="form-label">Date</label>

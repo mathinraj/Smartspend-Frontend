@@ -6,8 +6,6 @@ const DashboardPage = () => {
   const [expenses, setExpenses] = useState([]); // State to store expenses
   const [loading, setLoading] = useState(true); // State to track loading status
   const [error, setError] = useState(''); // State to store error messages
-  const [currentPage, setCurrentPage] = useState(1); // State to track current page
-  const itemsPerPage = 5; // Number of items per page
   const username = localStorage.getItem('username'); // Get the logged-in user's username
 
   // Fetch expenses from the backend when the component mounts
@@ -16,7 +14,11 @@ const DashboardPage = () => {
       try {
         const response = await api.get('/expenses/get/all');
         console.log('Response from backend:', response.data); // Log the response
-        setExpenses(response.data); // Set the fetched expenses in the state
+
+        // Sort expenses by date in descending order (most recent first)
+        const sortedExpenses = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        setExpenses(sortedExpenses); // Set the fetched and sorted expenses in the state
       } catch (err) {
         setError('Failed to fetch expenses. Please try again later.'); // Handle errors
         console.error('Error fetching expenses:', err);
@@ -28,13 +30,8 @@ const DashboardPage = () => {
     fetchExpenses(); // Call the fetch function
   }, []);
 
-  // Calculate the current expenses to display
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentExpenses = expenses.slice(indexOfFirstItem, indexOfLastItem);
-
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // Get the last 5 transactions
+  const lastFiveExpenses = expenses.slice(0, 5);
 
   return (
     <div className="d-flex flex-column min-vh-100">
@@ -70,7 +67,7 @@ const DashboardPage = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {currentExpenses.map((expense) => (
+                    {lastFiveExpenses.map((expense) => (
                       <tr key={expense.id}>
                         <td>{expense.date}</td>
                         <td>{expense.categoryName || 'N/A'}</td>
@@ -81,19 +78,6 @@ const DashboardPage = () => {
                   </tbody>
                 </table>
               </div>
-
-              {/* Pagination */}
-              <nav>
-                <ul className="pagination">
-                  {Array.from({ length: Math.ceil(expenses.length / itemsPerPage) }, (_, i) => (
-                    <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                      <button onClick={() => paginate(i + 1)} className="page-link">
-                        {i + 1}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
             </>
           )}
         </div>
