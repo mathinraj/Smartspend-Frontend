@@ -1,85 +1,101 @@
-import React, { useState } from 'react';
-import BudgetList from '../components/Budgets/BudgetList';
+
+// src/pages/Budgets.jsx
+import React, { useState, useEffect } from 'react';
 import BudgetForm from '../components/Budgets/BudgetForm';
+import BudgetList from '../components/Budgets/BudgetList';
 import BudgetProgress from '../components/Budgets/BudgetProgress';
 import SideMenu from '../components/SideMenu';
+import api from '../services/api'; // Import the Axios instance
 
 const BudgetsPage = () => {
-    const [budgets, setBudgets] = useState([
-        { id: 1, category: 'Food', amount: 500, startDate: '2023-10-01', endDate: '2023-10-31', progress: 60 },
-        { id: 2, category: 'Transport', amount: 200, startDate: '2023-10-01', endDate: '2023-10-31', progress: 30 },
-        { id: 3, category: 'Entertainment', amount: 300, startDate: '2023-10-01', endDate: '2023-10-31', progress: 80 },
-    ]);
-    const [selectedBudget, setSelectedBudget] = useState(null);
-    const [showForm, setShowForm] = useState(false);
+  const [budgets, setBudgets] = useState([]); // State to store budgets
+  const [showForm, setShowForm] = useState(false); // State to toggle the form
+  const [editingBudget, setEditingBudget] = useState(null); // State to track the budget being edited
+  const [loading, setLoading] = useState(true); // State to track loading status
+  const [error, setError] = useState(''); // State to store error messages
 
-    const handleAdd = () => {
-        setSelectedBudget(null);
-        setShowForm(true);
+  // Fetch budgets from the backend when the component mounts
+  useEffect(() => {
+    const fetchBudgets = async () => {
+      try {
+        const response = await api.get('/budget/get/all');
+        setBudgets(response.data);
+      } catch (err) {
+        setError('Failed to fetch budgets. Please try again later.');
+        console.error('Error fetching budgets:', err);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const handleEdit = (budget) => {
-        setSelectedBudget(budget);
-        setShowForm(true);
-    };
+    fetchBudgets();
+  }, []);
 
-    const handleDelete = (id) => {
-        setBudgets(budgets.filter((budget) => budget.id !== id));
-    };
+  // Handle form submission (add or update)
+  const handleSubmit = (budget) => {
+    if (editingBudget) {
+      // Update the existing budget in the list
+      setBudgets(budgets.map((b) => (b.id === budget.id ? budget : b)));
+      setEditingBudget(null); // Clear the editing state
+    } else {
+      // Add the new budget to the list
+      setBudgets([...budgets, budget]);
+    }
+    setShowForm(false); // Hide the form
+  };
 
-    const handleSubmit = (budget) => {
-        if (selectedBudget) {
-            // Update existing budget
-            setBudgets(
-                budgets.map((b) =>
-                    b.id === selectedBudget.id ? { ...b, ...budget, progress: calculateProgress(budget) } : b
-                )
-            );
-        } else {
-            // Add new budget
-            setBudgets([...budgets, { id: Date.now(), ...budget, progress: calculateProgress(budget) }]);
-        }
-        setShowForm(false);
-    };
+  // Handle deleting a budget
+  const handleDelete = (id) => {
+    setBudgets(budgets.filter((b) => b.id !== id)); // Remove the budget from the list
+  };
 
-    const handleCancel = () => {
-        setShowForm(false);
-    };
-
-    // Placeholder function to calculate progress
-    const calculateProgress = (budget) => {
-        return Math.floor(Math.random() * 100); // Replace with actual logic
-    };
-
-    return (
-        <div className="d-flex flex-column min-vh-100">
-            <div className="d-flex flex-grow-1">
-                <SideMenu />
-                <div className="flex-grow-1 p-4">
-                    <h1>Budgets</h1>
-                    {showForm ? (
-                        <BudgetForm
-                            budget={selectedBudget}
-                            onSubmit={handleSubmit}
-                            onCancel={handleCancel}
-                        />
-                    ) : (
-                        <>
-                            <button className="btn btn-primary mb-3" onClick={handleAdd}>
-                                Add Budget
-                            </button>
-                            <BudgetList
-                                budgets={budgets}
-                                onEdit={handleEdit}
-                                onDelete={handleDelete}
-                            />
-                        </>
-                    )}
-                    <BudgetProgress budgets={budgets} />
-                </div>
+  return (
+    <div className="d-flex flex-column min-vh-100">
+      <div className="d-flex flex-grow-1">
+        <SideMenu />
+        <div className="flex-grow-1 p-4">
+          <h1>Budgets</h1>
+          {loading ? (
+            <div className="text-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
             </div>
+          ) : error ? (
+            <div className="alert alert-danger">{error}</div>
+          ) : (
+            <>
+              <button
+                className="btn btn-primary mb-3"
+                onClick={() => {
+                  setEditingBudget(null); // Clear the editing state
+                  setShowForm(!showForm); // Toggle the form
+                }}
+              >
+                {showForm ? 'Hide Form' : 'Add Budget'}
+              </button>
+              {showForm && (
+                <BudgetForm
+                  budget={editingBudget}
+                  onSubmit={handleSubmit}
+                  onCancel={() => {
+                    setShowForm(false); // Hide the form
+                    setEditingBudget(null); // Clear the editing state
+                  }}
+                />
+              )}
+              <BudgetList
+                budgets={budgets}
+                onEdit={setEditingBudget}
+                onDelete={handleDelete}
+              />
+              <BudgetProgress budgets={budgets} />
+            </>
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default BudgetsPage;
