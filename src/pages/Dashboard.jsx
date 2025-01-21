@@ -1,4 +1,3 @@
-// src/pages/Dashboard.jsx
 import React, { useEffect, useState } from 'react';
 import SideMenu from '../components/SideMenu';
 import api from '../services/api'; // Import the Axios instance
@@ -7,6 +6,8 @@ const DashboardPage = () => {
   const [expenses, setExpenses] = useState([]); // State to store expenses
   const [loading, setLoading] = useState(true); // State to track loading status
   const [error, setError] = useState(''); // State to store error messages
+  const [currentPage, setCurrentPage] = useState(1); // State to track current page
+  const itemsPerPage = 5; // Number of items per page
   const username = localStorage.getItem('username'); // Get the logged-in user's username
 
   // Fetch expenses from the backend when the component mounts
@@ -23,9 +24,17 @@ const DashboardPage = () => {
         setLoading(false); // Set loading to false after the request completes
       }
     };
-  
+
     fetchExpenses(); // Call the fetch function
   }, []);
+
+  // Calculate the current expenses to display
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentExpenses = expenses.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="d-flex flex-column min-vh-100">
@@ -61,10 +70,10 @@ const DashboardPage = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {expenses.map((expense) => (
+                    {currentExpenses.map((expense) => (
                       <tr key={expense.id}>
                         <td>{expense.date}</td>
-                        <td>{expense.category?.name || 'N/A'}</td>
+                        <td>{expense.categoryName || 'N/A'}</td>
                         <td>₹{expense.amount}</td>
                         <td>{expense.description}</td>
                       </tr>
@@ -72,6 +81,19 @@ const DashboardPage = () => {
                   </tbody>
                 </table>
               </div>
+
+              {/* Pagination */}
+              <nav>
+                <ul className="pagination">
+                  {Array.from({ length: Math.ceil(expenses.length / itemsPerPage) }, (_, i) => (
+                    <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
+                      <button onClick={() => paginate(i + 1)} className="page-link">
+                        {i + 1}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
             </>
           )}
         </div>

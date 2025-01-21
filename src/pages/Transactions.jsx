@@ -1,15 +1,18 @@
-// src/pages/Transactions.jsx
 import React, { useState, useEffect } from 'react';
 import ExpenseForm from '../components/Expenses/ExpenseForm';
 import SideMenu from '../components/SideMenu';
 import api from '../services/api';
+import TransactionFilter from '../components/Transactions/TransactionFilter'; // Import the filter component
 
 const TransactionsPage = () => {
   const [expenses, setExpenses] = useState([]);
+  const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingExpense, setEditingExpense] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [currentPage, setCurrentPage] = useState(1); // State to track current page
+  const itemsPerPage = 5; // Number of items per page
 
   // Fetch expenses from the backend when the component mounts
   useEffect(() => {
@@ -17,6 +20,7 @@ const TransactionsPage = () => {
       try {
         const response = await api.get('/expenses/get/all');
         setExpenses(response.data);
+        setFilteredExpenses(response.data); // Initialize filtered expenses
       } catch (err) {
         setError(err.message || 'Failed to fetch expenses. Please try again later.');
       } finally {
@@ -45,10 +49,37 @@ const TransactionsPage = () => {
     try {
       await api.delete(`/expenses/delete/${id}`);
       setExpenses(expenses.filter((e) => e.id !== id));
+      setFilteredExpenses(filteredExpenses.filter((e) => e.id !== id));
     } catch (err) {
       setError(err.message || 'Failed to delete expense. Please try again.');
     }
   };
+
+  // Handle filtering expenses
+  const handleFilter = ({ category, startDate, endDate }) => {
+    const filtered = expenses.filter((expense) => {
+      const matchesCategory = category ? expense.categoryName === category : true;
+      const matchesStartDate = startDate ? expense.date >= startDate : true;
+      const matchesEndDate = endDate ? expense.date <= endDate : true;
+      return matchesCategory && matchesStartDate && matchesEndDate;
+    });
+    setFilteredExpenses(filtered);
+    setCurrentPage(1); // Reset to the first page after filtering
+  };
+
+  // Handle clearing filters
+  const handleClearFilter = () => {
+    setFilteredExpenses(expenses);
+    setCurrentPage(1); // Reset to the first page after clearing filters
+  };
+
+  // Calculate the current expenses to display
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentExpenses = filteredExpenses.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="d-flex flex-column min-vh-100">
@@ -87,6 +118,10 @@ const TransactionsPage = () => {
                   }}
                 />
               )}
+
+              {/* Transaction Filter */}
+              <TransactionFilter onFilter={handleFilter} onClear={handleClearFilter} />
+
               <div className="table-responsive">
                 <table className="table table-striped">
                   <thead>
@@ -99,7 +134,7 @@ const TransactionsPage = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {expenses.map((expense) => (
+                    {currentExpenses.map((expense) => (
                       <tr key={expense.id}>
                         <td>{expense.date}</td>
                         <td>{expense.categoryName}</td>
@@ -108,7 +143,7 @@ const TransactionsPage = () => {
                         <td>
                           <button
                             className="btn btn-sm btn-primary me-2"
-                            onClick={() => handleEdit(expense)}
+                            onClick={() => setEditingExpense(expense)}
                           >
                             Edit
                           </button>
@@ -124,6 +159,19 @@ const TransactionsPage = () => {
                   </tbody>
                 </table>
               </div>
+
+              {/* Pagination */}
+              <nav>
+                <ul className="pagination">
+                  {Array.from({ length: Math.ceil(filteredExpenses.length / itemsPerPage) }, (_, i) => (
+                    <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
+                      <button onClick={() => paginate(i + 1)} className="page-link">
+                        {i + 1}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
             </>
           )}
         </div>
