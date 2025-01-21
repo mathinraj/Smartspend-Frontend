@@ -1,6 +1,8 @@
 // src/components/Categories/CategoryForm.jsx
 import React, { useState } from 'react';
 import api from '../../services/api'; // Import the Axios instance
+import { toast } from 'react-toastify'; // Import toast from react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 
 const CategoryForm = ({ category, onSubmit, onCancel }) => {
   const [name, setName] = useState(category ? category.name : ''); // State for category name
@@ -22,9 +24,11 @@ const CategoryForm = ({ category, onSubmit, onCancel }) => {
       if (category) {
         // Update an existing category
         response = await api.put(`/category/update/${category.id}`, categoryData);
+        toast.success('Category updated successfully');
       } else {
         // Create a new category
         response = await api.post('/category/add', categoryData);
+        toast.success('Category added successfully');
       }
 
       // Call the onSubmit callback with the created/updated category

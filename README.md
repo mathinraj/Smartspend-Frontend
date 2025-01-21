@@ -25,7 +25,7 @@ SmartSpend helps you manage your finances effortlessly by tracking your daily ex
 - Run the application using Maven:
 `mvn spring-boot:run`
 
-npm install react-router-dom axios bootstrap react-chartjs-2 chart.js react-icons
+npm install react-router-dom axios bootstrap react-chartjs-2 chart.js react-icons react-toastify
 
 ###Structure
 

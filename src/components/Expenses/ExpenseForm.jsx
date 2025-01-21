@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
+import { toast } from 'react-toastify'; // Import toast from react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 
 const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
   const [amount, setAmount] = useState(expense ? expense.amount : '');
@@ -70,9 +72,11 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
       if (expense) {
         // Update an existing expense
         response = await api.put(`/expenses/update/${expense.id}`, expenseData);
+        toast.success('Category updated successfully');
       } else {
         // Create a new expense
         response = await api.post('/expenses/add', expenseData);
+        toast.success('Expense added successfully');
       }
 
       // Call the onSubmit callback with the created/updated expense

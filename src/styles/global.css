@@ -89,3 +89,16 @@ body {
   border-color: #28a745; /* Green border on hover (matches Bootstrap's success color) */
   box-shadow: 0 0 4px rgba(40, 167, 69, 0.5); /* Green shadow for a glowing effect */
 }
+
+.progress {
+  height: 20px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #007bff;
+  transition: width 0.3s ease;
+}
