@@ -1,37 +1,49 @@
-// src/components/SideMenu.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'; // Use NavLink instead of Link
+import '../styles/SideMenu.css'
 
 const SideMenu = () => {
   const role = localStorage.getItem('role'); // Get the user's role from localStorage
 
   return (
-    <div className="bg-light border-end" style={{ width: '250px', minHeight: '100vh' }}>
+    <div className="side-menu bg-light border-end" style={{ width: '250px', minHeight: '100vh' }}>
       <div className="p-3">
         <h4 className="mb-4">Menu</h4>
         <ul className="nav flex-column">
           <li className="nav-item">
-            <Link to="/dashboard" className="nav-link">Financial Horizon</Link>
+            <NavLink to="/dashboard" className="nav-link" activeClassName="active">
+              <i className="fas fa-home"></i> Financial Horizon
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link to="/transactions" className="nav-link">Expense Explorer</Link>
+            <NavLink to="/transactions" className="nav-link" activeClassName="active">
+              <i className="fas fa-chart-line"></i> Expense Explorer
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link to="/calendar" className="nav-link">Money Map</Link>
+            <NavLink to="/calendar" className="nav-link" activeClassName="active">
+              <i className="fas fa-calendar-alt"></i> Money Map
+            </NavLink>
           </li>
           {role === 'ADMIN' && (
             <>
               <li className="nav-item">
-                <Link to="/categories" className="nav-link">Category Corner</Link>
+                <NavLink to="/categories" className="nav-link" activeClassName="active">
+                  <i className="fas fa-tags"></i> Category Corner
+                </NavLink>
               </li>
               <li className="nav-item">
-                <Link to="/budgets" className="nav-link">Budget Compass</Link>
+                <NavLink to="/budgets" className="nav-link" activeClassName="active">
+                  <i className="fas fa-wallet"></i> Budget Compass
+                </NavLink>
               </li>
               <li className="nav-item">
-                <Link to="/users" className="nav-link">User Basecamp</Link>
+                <NavLink to="/users" className="nav-link" activeClassName="active">
+                  <i className="fas fa-users"></i> User Basecamp
+                </NavLink>
               </li>
             </>
-          )}          
+          )}
         </ul>
       </div>
     </div>

@@ -1,21 +1,20 @@
-// src/pages/Users.jsx
 import React, { useState, useEffect } from 'react';
 import UserForm from '../components/Users/UserForm';
 import UserList from '../components/Users/UserList';
 import SideMenu from '../components/SideMenu';
-import api from '../services/api'; // Import the Axios instance
-import { ToastContainer, toast } from 'react-toastify'; // Import toast notifications
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import api from '../services/api';
+import '../styles/Users.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UsersPage = () => {
-  const [users, setUsers] = useState([]); // State to store users
-  const [showForm, setShowForm] = useState(false); // State to toggle the form
-  const [editingUser, setEditingUser] = useState(null); // State to track the user being edited
-  const [loading, setLoading] = useState(true); // State to track loading status
-  const [error, setError] = useState(''); // State to store error messages
+  const [users, setUsers] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const username = localStorage.getItem("username");
 
-  // Fetch users from the backend when the component mounts
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -23,7 +22,7 @@ const UsersPage = () => {
         setUsers(response.data);
       } catch (err) {
         setError('Failed to fetch users. Please try again later.');
-        toast.error('Failed to fetch users. Please try again later.'); // Show error toast
+        toast.error('Failed to fetch users. Please try again later.');
         console.error('Error fetching users:', err);
       } finally {
         setLoading(false);
@@ -33,28 +32,23 @@ const UsersPage = () => {
     fetchUsers();
   }, []);
 
-  // Handle form submission (add or update)
   const handleSubmit = (user) => {
     if (editingUser) {
-      // Update the existing user in the list
       setUsers(users.map((u) => (u.id === user.id ? user : u)));
-      setEditingUser(null); // Clear the editing state
+      setEditingUser(null);
     } else {
-      // Add the new user to the list
       setUsers([...users, user]);
     }
-    setShowForm(false); // Hide the form
+    setShowForm(false);
   };
 
-  // Handle deleting a user
   const handleDelete = (id) => {
-    setUsers(users.filter((u) => u.id !== id)); // Remove the user from the list
+    setUsers(users.filter((u) => u.id !== id));
   };
 
-  // Handle editing a user
   const handleEdit = (user) => {
-    setEditingUser(user); // Set the user to be edited
-    setShowForm(true); // Show the form
+    setEditingUser(user);
+    setShowForm(true);
   };
 
   return (
@@ -62,7 +56,7 @@ const UsersPage = () => {
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4">
-          <h1>Basecamp <i class="fa-solid fa-person-rifle"></i></h1>
+          <h1>Basecamp <i className="fa-solid fa-person-rifle"></i></h1>
           <p>
             Welcome to Basecamp, <strong>{username}</strong>!
           </p>
@@ -79,8 +73,8 @@ const UsersPage = () => {
               <button
                 className="btn btn-primary mb-3"
                 onClick={() => {
-                  setEditingUser(null); // Clear the editing state
-                  setShowForm(!showForm); // Toggle the form
+                  setEditingUser(null);
+                  setShowForm(!showForm);
                 }}
               >
                 {showForm ? 'Hide Form' : 'Add User'}
@@ -90,21 +84,21 @@ const UsersPage = () => {
                   user={editingUser}
                   onSubmit={handleSubmit}
                   onCancel={() => {
-                    setShowForm(false); // Hide the form
-                    setEditingUser(null); // Clear the editing state
+                    setShowForm(false);
+                    setEditingUser(null);
                   }}
                 />
               )}
               <UserList
                 users={users}
-                onEdit={handleEdit} // Pass the handleEdit function
+                onEdit={handleEdit}
                 onDelete={handleDelete}
               />
             </>
           )}
         </div>
       </div>
-      <ToastContainer /> {/* Render the toast container */}
+      <ToastContainer />
     </div>
   );
 };

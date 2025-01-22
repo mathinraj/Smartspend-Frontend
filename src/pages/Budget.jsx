@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import BudgetForm from '../components/Budgets/BudgetForm';
 import BudgetList from '../components/Budgets/BudgetList';
 import SideMenu from '../components/SideMenu';
-import api from '../services/api'; // Import the Axios instance
+import api from '../services/api';
+import '../styles/Budget.css'
 
 const BudgetsPage = () => {
-  const [budgets, setBudgets] = useState([]); // State to store budgets
-  const [showForm, setShowForm] = useState(false); // State to toggle the form
-  const [editingBudget, setEditingBudget] = useState(null); // State to track the budget being edited
-  const [loading, setLoading] = useState(true); // State to track loading status
-  const [error, setError] = useState(''); // State to store error messages
+  const [budgets, setBudgets] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editingBudget, setEditingBudget] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Fetch budgets from the backend when the component mounts
   useEffect(() => {
     const fetchBudgets = async () => {
       try {
@@ -28,22 +28,18 @@ const BudgetsPage = () => {
     fetchBudgets();
   }, []);
 
-  // Handle form submission (add or update)
   const handleSubmit = (budget) => {
     if (editingBudget) {
-      // Update the existing budget in the list
       setBudgets(budgets.map((b) => (b.id === budget.id ? budget : b)));
-      setEditingBudget(null); // Clear the editing state
+      setEditingBudget(null);
     } else {
-      // Add the new budget to the list
       setBudgets([...budgets, budget]);
     }
-    setShowForm(false); // Hide the form
+    setShowForm(false);
   };
 
-  // Handle deleting a budget
   const handleDelete = (id) => {
-    setBudgets(budgets.filter((b) => b.id !== id)); // Remove the budget from the list
+    setBudgets(budgets.filter((b) => b.id !== id));
   };
 
   return (
@@ -51,7 +47,7 @@ const BudgetsPage = () => {
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4">
-          <h1>Budget Compass <i class="fa-regular fa-compass"></i></h1>
+          <h1>Budget Compass <i className="fa-regular fa-compass"></i></h1>
           {loading ? (
             <div className="text-center">
               <div className="spinner-border text-primary" role="status">
@@ -65,8 +61,8 @@ const BudgetsPage = () => {
               <button
                 className="btn btn-primary mb-3"
                 onClick={() => {
-                  setEditingBudget(null); // Clear the editing state
-                  setShowForm(!showForm); // Toggle the form
+                  setEditingBudget(null);
+                  setShowForm(!showForm);
                 }}
               >
                 {showForm ? 'Hide Form' : 'Add Budget'}
@@ -76,8 +72,8 @@ const BudgetsPage = () => {
                   budget={editingBudget}
                   onSubmit={handleSubmit}
                   onCancel={() => {
-                    setShowForm(false); // Hide the form
-                    setEditingBudget(null); // Clear the editing state
+                    setShowForm(false);
+                    setEditingBudget(null);
                   }}
                 />
               )}

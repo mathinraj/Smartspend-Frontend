@@ -1,0 +1,85 @@
+/* Budget Page Styles */
+.budget-page {
+    padding: 20px;
+  }
+  
+  /* Add Budget Button */
+  .budget-page .btn-primary {
+    background-color: #00802b; /* Green */
+    border: none;
+    transition: all 0.3s ease;
+  }
+  
+  .budget-page .btn-primary:hover {
+    background-color: #006622; /* Darker green */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Budget Form */
+  .budget-form {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .budget-form .form-control {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .budget-form .btn-primary {
+    background-color: #00802b; /* Green */
+    border: none;
+  }
+  
+  .budget-form .btn-primary:hover {
+    background-color: #006622; /* Darker green */
+  }
+  
+  .budget-form .btn-secondary {
+    background-color: #6c757d; /* Gray */
+    border: none;
+  }
+  
+  .budget-form .btn-secondary:hover {
+    background-color: #545b62; /* Darker gray */
+  }
+  
+  /* Budget List */
+  .budget-list {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .budget-list th {
+    background-color: #00802b; /* Green */
+    color: white;
+    font-weight: 500;
+  }
+  
+  .budget-list td {
+    color: #333;
+  }
+  
+  .budget-list tr:hover {
+    background-color: #f0f0f0; /* Light gray on hover */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .budget-page .row > div {
+      margin-bottom: 20px;
+    }
+  
+    .budget-list th,
+    .budget-list td {
+      padding: 8px;
+    }
+  }

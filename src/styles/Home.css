@@ -1,0 +1,69 @@
+/* Home Page Styles */
+.home-page-background {
+    background-image: url('path/to/your/background-image.jpg'); /* Add a background image */
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .home-page-background h1 {
+    font-size: 48px;
+    font-weight: 600;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+  }
+  
+  .home-page-background p {
+    font-size: 24px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+    margin-bottom: 30px;
+  }
+  
+  .home-page-background .btn-success {
+    background-color: #28a745; /* Green */
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .home-page-background .btn-success:hover {
+    background-color: #218838; /* Darker green */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .home-page-background .btn-success i {
+    margin-left: 8px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .home-page-background h1 {
+      font-size: 36px;
+    }
+  
+    .home-page-background p {
+      font-size: 18px;
+    }
+  
+    .home-page-background .btn-success {
+      font-size: 16px;
+      padding: 10px 20px;
+    }
+
+    .home-page-background {
+        background-image: url('../assets/Images/background_home.webp'); /* Add a background image */
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+  }

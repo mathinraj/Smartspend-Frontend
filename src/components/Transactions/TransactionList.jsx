@@ -8,7 +8,7 @@ const TransactionList = ({ transactions }) => {
   });
 
   return (
-    <div className="table-responsive">
+    <div className="table-responsive transactions-table">
       <table className="table table-striped">
         <thead>
           <tr>

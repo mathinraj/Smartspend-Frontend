@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../services/api'; // Import the Axios instance
+import api from '../../services/api';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BudgetForm = ({ budget, onSubmit, onCancel }) => {
-  const [amount, setAmount] = useState(budget ? budget.amount : ''); // State for budget amount
-  const [categoryName, setCategoryName] = useState(budget ? budget.categoryName : ''); // State for category name
-  const [startDate, setStartDate] = useState(budget ? budget.startDate : ''); // State for start date
-  const [endDate, setEndDate] = useState(budget ? budget.endDate : ''); // State for end date
-  const [error, setError] = useState(''); // State for error messages
-  const [categories, setCategories] = useState([]); // State to store categories
+  const [amount, setAmount] = useState(budget ? budget.amount : '');
+  const [categoryName, setCategoryName] = useState(budget ? budget.categoryName : '');
+  const [startDate, setStartDate] = useState(budget ? budget.startDate : '');
+  const [endDate, setEndDate] = useState(budget ? budget.endDate : '');
+  const [error, setError] = useState('');
+  const [categories, setCategories] = useState([]);
 
-  // Fetch categories when the component mounts
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await api.get('/category/get/all'); // Fetch all categories
+        const response = await api.get('/category/get/all');
         setCategories(response.data);
       } catch (err) {
         console.error('Error fetching categories:', err);
@@ -26,13 +27,11 @@ const BudgetForm = ({ budget, onSubmit, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate input
     if (!amount || !categoryName || !startDate || !endDate) {
       setError('All fields are required.');
       return;
     }
 
-    // Find the category ID based on the selected category name
     const selectedCategory = categories.find((cat) => cat.name === categoryName);
     if (!selectedCategory) {
       setError('Invalid category selected.');
@@ -41,7 +40,7 @@ const BudgetForm = ({ budget, onSubmit, onCancel }) => {
 
     const budgetData = {
       amount: parseFloat(amount),
-      categoryId: selectedCategory.id, // Use the category ID from the selected category
+      categoryId: selectedCategory.id,
       startDate,
       endDate,
     };
@@ -49,17 +48,15 @@ const BudgetForm = ({ budget, onSubmit, onCancel }) => {
     try {
       let response;
       if (budget) {
-        // Update an existing budget
         response = await api.put(`/budget/update/${budget.id}`, budgetData);
+        toast.success('Budget updated successfully');
       } else {
-        // Create a new budget
         response = await api.post('/budget/set', budgetData);
+        toast.success('Budget added successfully');
       }
 
-      // Call the onSubmit callback with the created/updated budget
       onSubmit(response.data);
 
-      // Clear the form fields
       if (!budget) {
         setAmount('');
         setCategoryName('');
@@ -74,7 +71,7 @@ const BudgetForm = ({ budget, onSubmit, onCancel }) => {
   };
 
   return (
-    <div className="card mb-4">
+    <div className="card budget-form">
       <div className="card-body">
         <h5 className="card-title">{budget ? 'Edit Budget' : 'Add Budget'}</h5>
         {error && <div className="alert alert-danger">{error}</div>}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ExpenseForm from '../components/Expenses/ExpenseForm';
 import SideMenu from '../components/SideMenu';
 import api from '../services/api';
+import '../styles/Transactions.css'
 import TransactionFilter from '../components/Transactions/TransactionFilter';
 
 const TransactionsPage = () => {
@@ -61,12 +62,18 @@ const TransactionsPage = () => {
     }
   };
 
-  const handleFilter = ({ category, startDate, endDate }) => {
+  const handleFilter = ({ category, startDate, endDate, transactionType }) => {
     const filtered = expenses.filter((expense) => {
       const matchesCategory = category ? expense.categoryName === category : true;
       const matchesStartDate = startDate ? expense.date >= startDate : true;
       const matchesEndDate = endDate ? expense.date <= endDate : true;
-      return matchesCategory && matchesStartDate && matchesEndDate;
+      const matchesTransactionType = transactionType
+        ? transactionType === 'income'
+          ? expense.amount >= 0
+          : expense.amount < 0
+        : true;
+
+      return matchesCategory && matchesStartDate && matchesEndDate && matchesTransactionType;
     });
 
     const sortedFilteredExpenses = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -90,7 +97,7 @@ const TransactionsPage = () => {
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4">
-          <h1>Expense Explorer <i class="fa-brands fa-wpexplorer"></i></h1>
+          <h1>Expense Explorer <i className="fa-brands fa-wpexplorer"></i></h1>
           {loading ? (
             <div className="text-center">
               <div className="spinner-border text-primary" role="status">

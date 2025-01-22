@@ -45,7 +45,7 @@ const BudgetList = ({ budgets, onEdit, onDelete }) => {
 
   return (
     <div>
-      <div className="table-responsive">
+      <div className="table-responsive budget-list">
         <table className="table table-striped">
           <thead>
             <tr>

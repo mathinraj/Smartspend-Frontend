@@ -1,19 +1,17 @@
-// src/components/Users/UserForm.jsx
 import React, { useState } from 'react';
-import api from '../../services/api'; // Import the Axios instance
-import { toast } from 'react-toastify'; // Import toast notifications
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import api from '../../services/api';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserForm = ({ user, onSubmit, onCancel }) => {
-  const [username, setUsername] = useState(user ? user.username : ''); // State for username
-  const [password, setPassword] = useState(user ? user.password : ''); // State for password
-  const [role, setRole] = useState(user ? user.role : 'USER'); // State for role
-  const [error, setError] = useState(''); // State for error messages
+  const [username, setUsername] = useState(user ? user.username : '');
+  const [password, setPassword] = useState(user ? user.password : '');
+  const [role, setRole] = useState(user ? user.role : 'USER');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate input
     if (!username || !password || !role) {
       setError('All fields are required.');
       return;
@@ -28,19 +26,15 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
     try {
       let response;
       if (user) {
-        // Update an existing user
         response = await api.put(`/users/update/${user.id}`, userData);
-        toast.success('User updated successfully!'); // Show success toast
+        toast.success('User updated successfully!');
       } else {
-        // Create a new user
         response = await api.post('/users/add', userData);
-        toast.success('User added successfully!'); // Show success toast
+        toast.success('User added successfully!');
       }
 
-      // Call the onSubmit callback with the created/updated user
       onSubmit(response.data);
 
-      // Clear the form fields
       if (!user) {
         setUsername('');
         setPassword('');
@@ -49,13 +43,13 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
       setError('');
     } catch (err) {
       setError(user ? 'Failed to update user. Please try again.' : 'Failed to create user. Please try again.');
-      toast.error(error); // Show error toast
+      toast.error(error);
       console.error('Error:', err);
     }
   };
 
   return (
-    <div className="card mb-4">
+    <div className="card user-form">
       <div className="card-body">
         <h5 className="card-title">{user ? 'Edit User' : 'Add User'}</h5>
         {error && <div className="alert alert-danger">{error}</div>}

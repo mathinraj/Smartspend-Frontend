@@ -1,17 +1,15 @@
-// src/components/Categories/CategoryForm.jsx
 import React, { useState } from 'react';
-import api from '../../services/api'; // Import the Axios instance
-import { toast } from 'react-toastify'; // Import toast from react-toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+import api from '../../services/api';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CategoryForm = ({ category, onSubmit, onCancel }) => {
-  const [name, setName] = useState(category ? category.name : ''); // State for category name
-  const [error, setError] = useState(''); // State for error messages
+  const [name, setName] = useState(category ? category.name : '');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate input
     if (!name) {
       setError('Category name is required.');
       return;
@@ -22,19 +20,15 @@ const CategoryForm = ({ category, onSubmit, onCancel }) => {
     try {
       let response;
       if (category) {
-        // Update an existing category
         response = await api.put(`/category/update/${category.id}`, categoryData);
         toast.success('Category updated successfully');
       } else {
-        // Create a new category
         response = await api.post('/category/add', categoryData);
         toast.success('Category added successfully');
       }
 
-      // Call the onSubmit callback with the created/updated category
       onSubmit(response.data);
 
-      // Clear the form fields
       if (!category) {
         setName('');
       }
@@ -46,7 +40,7 @@ const CategoryForm = ({ category, onSubmit, onCancel }) => {
   };
 
   return (
-    <div className="card mb-4">
+    <div className="card category-form">
       <div className="card-body">
         <h5 className="card-title">{category ? 'Edit Category' : 'Add Category'}</h5>
         {error && <div className="alert alert-danger">{error}</div>}

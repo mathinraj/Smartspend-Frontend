@@ -1,0 +1,101 @@
+/* Transactions Page Styles */
+.transactions-page {
+    padding: 20px;
+  }
+  
+  /* Add Transaction Button */
+  .transactions-page .btn-primary {
+    background-color: #00802b; /* Green */
+    border: none;
+    transition: all 0.3s ease;
+  }
+  
+  .transactions-page .btn-primary:hover {
+    background-color: #006622; /* Darker green */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Transaction Filter */
+  .transaction-filter {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .transaction-filter .form-control {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .transaction-filter .btn-primary {
+    background-color: #00802b; /* Green */
+    border: none;
+  }
+  
+  .transaction-filter .btn-primary:hover {
+    background-color: #006622; /* Darker green */
+  }
+  
+  .transaction-filter .btn-danger {
+    background-color: #dc3545; /* Red */
+    border: none;
+  }
+  
+  .transaction-filter .btn-danger:hover {
+    background-color: #a71d2a; /* Darker red */
+  }
+  
+  /* Transaction Table */
+  .transactions-table {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .transactions-table th {
+    background-color: #00802b; /* Green */
+    color: white;
+    font-weight: 500;
+  }
+  
+  .transactions-table td {
+    color: #333;
+  }
+  
+  .transactions-table tr:hover {
+    background-color: #f0f0f0; /* Light gray on hover */
+  }
+  
+  /* Pagination */
+  .pagination {
+    margin-top: 20px;
+  }
+  
+  .pagination .page-item.active .page-link {
+    background-color: #00802b; /* Green */
+    border-color: #00802b;
+  }
+  
+  .pagination .page-link {
+    color: #00802b; /* Green */
+  }
+  
+  .pagination .page-link:hover {
+    color: #006622; /* Darker green */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .transaction-filter .row > div {
+      margin-bottom: 10px;
+    }
+  
+    .transactions-table th,
+    .transactions-table td {
+      padding: 8px;
+    }
+  }

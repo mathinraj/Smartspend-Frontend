@@ -1,0 +1,84 @@
+/* SideMenu Styles */
+.side-menu {
+    background-color: #ffffff; /* White background */
+    width: 250px;
+    min-height: 100vh;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: all 0.3s ease; /* Smooth transitions */
+  }
+  
+  .side-menu h4 {
+    color: #333; /* Dark text for the title */
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee; /* Divider line */
+  }
+  
+  .side-menu .nav {
+    padding: 0;
+  }
+  
+  .side-menu .nav-item {
+    margin: 5px 0;
+  }
+  
+  .side-menu .nav-link {
+    color: #333; /* Dark text for links */
+    padding: 10px 15px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease; /* Smooth hover effect */
+  }
+  
+  .side-menu .nav-link:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+    color: #00802b; /* Green text on hover */
+    text-decoration: none;
+  }
+  
+  .side-menu .nav-link.active {
+    background-color: #00802b; /* Green background for active link */
+    color: white; /* White text for active link */
+  }
+  
+  /* Add icons to menu items (optional) */
+  .side-menu .nav-link i {
+    margin-right: 10px;
+    font-size: 18px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .side-menu {
+      width: 100%;
+      min-height: auto;
+      box-shadow: none;
+      border-right: none;
+    }
+  
+    .side-menu h4 {
+      text-align: center;
+    }
+  
+    .side-menu .nav-link {
+      justify-content: center;
+    }
+  }
+
+  /* Active state for NavLink */
+.side-menu .nav-link.active {
+    background-color: #00802b; /* Green background for active link */
+    color: white; /* White text for active link */
+    font-weight: 500; /* Bold text for active link */
+  }
+  
+  /* Hover effect for NavLink */
+  .side-menu .nav-link:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+    color: #00802b; /* Green text on hover */
+  }
+
+  .side-menu .nav-link {
+    transition: all 0.3s ease; /* Smooth transitions for hover and active states */
+  }
