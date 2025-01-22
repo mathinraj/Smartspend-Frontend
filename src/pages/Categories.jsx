@@ -56,27 +56,53 @@ const CategoriesPage = () => {
   const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
   const currentYear = currentDate.getFullYear();
 
-  // Prepare data for the pie chart
-  const pieChartData = categories.map((category) => {
-    // Filter expenses for the current category and current month
-    const categoryExpenses = expenses.filter((expense) => {
-      const expenseDate = new Date(expense.date);
-      return (
-        expense.categoryName === category.name && // Match the category
-        expense.amount < 0 && // Only include expenses (negative amounts)
-        expenseDate.getMonth() + 1 === currentMonth && // Match the current month
-        expenseDate.getFullYear() === currentYear // Match the current year
-      );
-    });
+  // Prepare data for the expense pie chart
+  const expensePieChartData = categories
+    .map((category) => {
+      // Filter expenses for the current category and current month
+      const categoryExpenses = expenses.filter((expense) => {
+        const expenseDate = new Date(expense.date);
+        return (
+          expense.categoryName === category.name && // Match the category
+          expense.amount < 0 && // Only include expenses (negative amounts)
+          expenseDate.getMonth() + 1 === currentMonth && // Match the current month
+          expenseDate.getFullYear() === currentYear // Match the current year
+        );
+      });
 
-    // Calculate the total expense for this category
-    const totalExpense = categoryExpenses.reduce((sum, expense) => sum + Math.abs(expense.amount), 0);
+      // Calculate the total expense for this category
+      const totalExpense = categoryExpenses.reduce((sum, expense) => sum + Math.abs(expense.amount), 0);
 
-    return {
-      name: category.name,
-      value: totalExpense, // Use total expense instead of count
-    };
-  });
+      return {
+        name: category.name,
+        value: totalExpense, // Use total expense instead of count
+      };
+    })
+    .filter((entry) => entry.value > 0); // Filter out categories with zero values
+
+  // Prepare data for the income pie chart
+  const incomePieChartData = categories
+    .map((category) => {
+      // Filter incomes for the current category and current month
+      const categoryIncomes = expenses.filter((expense) => {
+        const expenseDate = new Date(expense.date);
+        return (
+          expense.categoryName === category.name && // Match the category
+          expense.amount >= 0 && // Only include incomes (positive amounts)
+          expenseDate.getMonth() + 1 === currentMonth && // Match the current month
+          expenseDate.getFullYear() === currentYear // Match the current year
+        );
+      });
+
+      // Calculate the total income for this category
+      const totalIncome = categoryIncomes.reduce((sum, expense) => sum + expense.amount, 0);
+
+      return {
+        name: category.name,
+        value: totalIncome, // Use total income instead of count
+      };
+    })
+    .filter((entry) => entry.value > 0); // Filter out categories with zero values
 
   return (
     <div className="d-flex flex-column min-vh-100">
@@ -118,7 +144,16 @@ const CategoriesPage = () => {
                 onEdit={setEditingCategory}
                 onDelete={handleDelete}
               />
-              <CategoryPieChart data={pieChartData} />
+
+              {/* Display pie charts side by side */}
+              <div className="row">
+                <div className="col-md-6">
+                  <CategoryPieChart data={expensePieChartData} type="expense" />
+                </div>
+                <div className="col-md-6">
+                  <CategoryPieChart data={incomePieChartData} type="income" />
+                </div>
+              </div>
             </>
           )}
         </div>

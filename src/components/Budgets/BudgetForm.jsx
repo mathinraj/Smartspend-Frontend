@@ -1,25 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../../services/api'; // Import the Axios instance
 
 const BudgetForm = ({ budget, onSubmit, onCancel }) => {
   const [amount, setAmount] = useState(budget ? budget.amount : ''); // State for budget amount
-  const [categoryId, setCategoryId] = useState(budget ? budget.categoryId : ''); // State for category ID
+  const [categoryName, setCategoryName] = useState(budget ? budget.categoryName : ''); // State for category name
   const [startDate, setStartDate] = useState(budget ? budget.startDate : ''); // State for start date
   const [endDate, setEndDate] = useState(budget ? budget.endDate : ''); // State for end date
   const [error, setError] = useState(''); // State for error messages
+  const [categories, setCategories] = useState([]); // State to store categories
+
+  // Fetch categories when the component mounts
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await api.get('/category/get/all'); // Fetch all categories
+        setCategories(response.data);
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate input
-    if (!amount || !categoryId || !startDate || !endDate) {
+    if (!amount || !categoryName || !startDate || !endDate) {
       setError('All fields are required.');
+      return;
+    }
+
+    // Find the category ID based on the selected category name
+    const selectedCategory = categories.find((cat) => cat.name === categoryName);
+    if (!selectedCategory) {
+      setError('Invalid category selected.');
       return;
     }
 
     const budgetData = {
       amount: parseFloat(amount),
-      categoryId: parseInt(categoryId),
+      categoryId: selectedCategory.id, // Use the category ID from the selected category
       startDate,
       endDate,
     };
@@ -40,7 +62,7 @@ const BudgetForm = ({ budget, onSubmit, onCancel }) => {
       // Clear the form fields
       if (!budget) {
         setAmount('');
-        setCategoryId('');
+        setCategoryName('');
         setStartDate('');
         setEndDate('');
       }
@@ -69,15 +91,21 @@ const BudgetForm = ({ budget, onSubmit, onCancel }) => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="categoryId" className="form-label">Category ID</label>
-            <input
-              type="number"
-              id="categoryId"
+            <label htmlFor="categoryName" className="form-label">Category</label>
+            <select
+              id="categoryName"
               className="form-control"
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
+              value={categoryName}
+              onChange={(e) => setCategoryName(e.target.value)}
               required
-            />
+            >
+              <option value="">Select a category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-3">
             <label htmlFor="startDate" className="form-label">Start Date</label>
