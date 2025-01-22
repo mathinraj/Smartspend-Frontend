@@ -102,3 +102,73 @@ body {
   background-color: #007bff;
   transition: width 0.3s ease;
 }
+
+/* Custom styles for the calendar */
+.react-calendar {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #201f1f; /* Add border for gridlines */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.react-calendar__month-view__weekdays {
+  background-color: #f8f9fa; /* Light gray background for weekdays */
+  border-bottom: 1px solid #080808; /* Add border for gridlines */
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.react-calendar__tile {
+  padding: 1.5em 0.5em; /* Increase padding for better spacing */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd; /* Add border for gridlines */
+  background-color: #fff; /* White background for tiles */
+}
+
+.react-calendar__tile--active { 
+  background-color: #de0e0e; /* Blue background for active tile */
+  color: white;
+}
+
+.react-calendar__tile--now {
+  background-color: #f8f9fa; /* Light gray background for current day */
+  color: #000;
+}
+
+.react-calendar__navigation {
+  background-color:  #f4f6f4; /* Blue background for navigation */
+  color: rgb(6, 6, 6);
+  padding: 10px;
+  border-bottom: 1px solid #ddd; /* Add border for gridlines */
+}
+
+.react-calendar__navigation button {
+  background-color: transparent;
+  border: none;
+  color: rgb(11, 0, 0);
+  font-size: 16px;
+  cursor: pointer;
+  font-style: bold;
+}
+
+.react-calendar__navigation button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.react-calendar__navigation button:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Light hover effect */
+}
+
+/* .react-calendar__navigation__label:hover{
+  background-color: #dc3545 !important;
+} */

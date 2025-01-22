@@ -1,13 +1,11 @@
 import React from 'react';
 
 const TransactionList = ({ transactions }) => {
-  // Sort transactions by date in descending order (latest first)
   const sortedTransactions = [...transactions].sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
-    return dateB - dateA; // Sort in descending order
+    return dateB - dateA;
   });
-  console.log('Sorted Transactions:', sortedTransactions);
 
   return (
     <div className="table-responsive">
@@ -16,6 +14,7 @@ const TransactionList = ({ transactions }) => {
           <tr>
             <th>Date</th>
             <th>Category</th>
+            <th>Type</th>
             <th>Amount</th>
             <th>Description</th>
           </tr>
@@ -25,7 +24,8 @@ const TransactionList = ({ transactions }) => {
             <tr key={transaction.id}>
               <td>{transaction.date}</td>
               <td>{transaction.categoryName}</td>
-              <td>₹{transaction.amount}</td>
+              <td>{transaction.amount >= 0 ? 'Income' : 'Expense'}</td>
+              <td>₹{Math.abs(transaction.amount)}</td>
               <td>{transaction.description}</td>
             </tr>
           ))}

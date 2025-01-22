@@ -4,11 +4,12 @@ import { toast } from 'react-toastify'; // Import toast from react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 
 const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
-  const [amount, setAmount] = useState(expense ? expense.amount : '');
+  const [amount, setAmount] = useState(expense ? Math.abs(expense.amount) : ''); // Store positive amount
   const [description, setDescription] = useState(expense ? expense.description : '');
   const [categoryId, setCategoryId] = useState(expense ? expense.categoryId : '');
   const [userId, setUserId] = useState(expense ? expense.userId : '');
   const [date, setDate] = useState(expense ? expense.date : '');
+  const [transactionType, setTransactionType] = useState(expense ? (expense.amount >= 0 ? 'income' : 'expense') : 'expense'); // Default to expense
   const [error, setError] = useState('');
 
   const [categories, setCategories] = useState([]); // State to store categories
@@ -36,11 +37,12 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
   // Pre-fill the form if editing an existing expense
   useEffect(() => {
     if (expense) {
-      setAmount(expense.amount);
+      setAmount(Math.abs(expense.amount)); // Store positive amount
       setDescription(expense.description);
       setCategoryId(expense.categoryId);
       setUserId(expense.userId);
       setDate(expense.date);
+      setTransactionType(expense.amount >= 0 ? 'income' : 'expense'); // Set transaction type based on amount
     }
   }, [expense]);
 
@@ -58,9 +60,12 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
       return;
     }
 
+    // Adjust the amount based on transaction type
+    const adjustedAmount = transactionType === 'income' ? Math.abs(amount) : -Math.abs(amount);
+
     // Create the expense object
     const expenseData = {
-      amount: parseFloat(amount),
+      amount: adjustedAmount, // Use adjusted amount
       description,
       categoryId: parseInt(categoryId),
       userId: parseInt(userId),
@@ -72,7 +77,7 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
       if (expense) {
         // Update an existing expense
         response = await api.put(`/expenses/update/${expense.id}`, expenseData);
-        toast.success('Category updated successfully');
+        toast.success('Expense updated successfully');
       } else {
         // Create a new expense
         response = await api.post('/expenses/add', expenseData);
@@ -89,6 +94,7 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
         setCategoryId('');
         setUserId('');
         setDate('');
+        setTransactionType('expense'); // Reset to expense
       }
       setError('');
     } catch (err) {
@@ -100,9 +106,24 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
   return (
     <div className="card mb-4">
       <div className="card-body">
-        <h5 className="card-title">{expense ? 'Edit Expense' : 'Add Expense'}</h5>
+        <h5 className="card-title">{expense ? 'Edit Transaction' : 'Add Transaction'}</h5>
         {error && <div className="alert alert-danger">{error}</div>}
         <form onSubmit={handleSubmit}>
+          {/* Add a dropdown for transaction type */}
+          <div className="mb-3">
+            <label htmlFor="transactionType" className="form-label">Transaction Type</label>
+            <select
+              id="transactionType"
+              className="form-control"
+              value={transactionType}
+              onChange={(e) => setTransactionType(e.target.value)}
+              required
+            >
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+
           <div className="mb-3">
             <label htmlFor="amount" className="form-label">Amount</label>
             <input

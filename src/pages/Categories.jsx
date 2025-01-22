@@ -33,7 +33,7 @@ const CategoriesPage = () => {
     fetchData();
   }, []);
 
-    // Handle form submission (add or update)
+  // Handle form submission (add or update)
   const handleSubmit = (category) => {
     if (editingCategory) {
       // Update the existing category in the list
@@ -51,17 +51,30 @@ const CategoriesPage = () => {
     setCategories(categories.filter((c) => c.id !== id)); // Remove the category from the list
   };
 
+  // Get the current month and year
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
+  const currentYear = currentDate.getFullYear();
 
   // Prepare data for the pie chart
   const pieChartData = categories.map((category) => {
-    // Filter expenses for the current category
-    const categoryExpenses = expenses.filter(
-      (expense) => expense.categoryName === category.name
-    );
+    // Filter expenses for the current category and current month
+    const categoryExpenses = expenses.filter((expense) => {
+      const expenseDate = new Date(expense.date);
+      return (
+        expense.categoryName === category.name && // Match the category
+        expense.amount < 0 && // Only include expenses (negative amounts)
+        expenseDate.getMonth() + 1 === currentMonth && // Match the current month
+        expenseDate.getFullYear() === currentYear // Match the current year
+      );
+    });
+
+    // Calculate the total expense for this category
+    const totalExpense = categoryExpenses.reduce((sum, expense) => sum + Math.abs(expense.amount), 0);
 
     return {
       name: category.name,
-      value: categoryExpenses.length, // Count the number of expenses for this category
+      value: totalExpense, // Use total expense instead of count
     };
   });
 

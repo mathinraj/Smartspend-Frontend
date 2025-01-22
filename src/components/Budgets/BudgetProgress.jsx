@@ -45,12 +45,10 @@ const BudgetProgress = ({ budgets }) => {
       try {
         // Fetch expenses
         const expensesResponse = await api.get('/expenses/get/all');
-        console.log('Expenses:', expensesResponse.data); // Debug log
         setExpenses(expensesResponse.data);
 
         // Fetch categories
         const categoriesResponse = await api.get('/category/get/all');
-        console.log('Categories:', categoriesResponse.data); // Debug log
         setCategories(categoriesResponse.data);
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -77,25 +75,20 @@ const BudgetProgress = ({ budgets }) => {
         });
       });
 
-      console.log('Latest Budgets:', latestBudgets); // Debug log
       setLatestBudgets(latestBudgets);
     }
   }, [budgets]);
 
   // Calculate progress for each budget
   const calculateProgress = (budget) => {
-    console.log('Budget:', budget); // Debug log
 
     const categoryExpenses = expenses.filter(
       (expense) => expense.categoryId === budget.categoryId
     );
-    console.log('Category Expenses:', categoryExpenses); // Debug log
 
     const totalSpent = categoryExpenses.reduce((sum, expense) => sum + expense.amount, 0);
-    console.log('Total Spent:', totalSpent); // Debug log
 
     const progress = ((totalSpent / budget.amount) * 100).toFixed(2);
-    console.log('Progress:', progress); // Debug log
 
     return progress > 100 ? 100 : progress; // Cap progress at 100%
   };
