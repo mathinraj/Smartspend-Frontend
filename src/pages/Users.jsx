@@ -13,6 +13,7 @@ const UsersPage = () => {
   const [editingUser, setEditingUser] = useState(null); // State to track the user being edited
   const [loading, setLoading] = useState(true); // State to track loading status
   const [error, setError] = useState(''); // State to store error messages
+  const username = localStorage.getItem("username");
 
   // Fetch users from the backend when the component mounts
   useEffect(() => {
@@ -61,7 +62,10 @@ const UsersPage = () => {
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4">
-          <h1>Users</h1>
+          <h1>Basecamp <i class="fa-solid fa-person-rifle"></i></h1>
+          <p>
+            Welcome to Basecamp, <strong>{username}</strong>!
+          </p>
           {loading ? (
             <div className="text-center">
               <div className="spinner-border text-primary" role="status">

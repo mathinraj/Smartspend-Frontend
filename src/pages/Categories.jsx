@@ -109,7 +109,7 @@ const CategoriesPage = () => {
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4">
-          <h1>Categories</h1>
+          <h1><i class="fa-solid fa-icons"></i> Category Corner</h1>
           {loading ? (
             <div className="text-center">
               <div className="spinner-border text-primary" role="status">

@@ -63,7 +63,7 @@ const CalendarPage = () => {
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4 d-flex flex-column">
-          <h1>Calendar</h1>
+          <h1>Money Map <i class="fa-solid fa-map-location-dot"></i></h1>
           {loading ? (
             <div className="text-center">
               <div className="spinner-border text-primary" role="status">

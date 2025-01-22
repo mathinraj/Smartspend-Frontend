@@ -1,9 +1,6 @@
-
-// src/pages/Budgets.jsx
 import React, { useState, useEffect } from 'react';
 import BudgetForm from '../components/Budgets/BudgetForm';
 import BudgetList from '../components/Budgets/BudgetList';
-import BudgetProgress from '../components/Budgets/BudgetProgress';
 import SideMenu from '../components/SideMenu';
 import api from '../services/api'; // Import the Axios instance
 
@@ -54,7 +51,7 @@ const BudgetsPage = () => {
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4">
-          <h1>Budgets</h1>
+          <h1>Budget Compass <i class="fa-regular fa-compass"></i></h1>
           {loading ? (
             <div className="text-center">
               <div className="spinner-border text-primary" role="status">
@@ -89,7 +86,6 @@ const BudgetsPage = () => {
                 onEdit={setEditingBudget}
                 onDelete={handleDelete}
               />
-              <BudgetProgress budgets={budgets} />
             </>
           )}
         </div>

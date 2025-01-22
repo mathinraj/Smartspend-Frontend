@@ -90,7 +90,7 @@ const TransactionsPage = () => {
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4">
-          <h1>Transactions</h1>
+          <h1>Expense Explorer <i class="fa-brands fa-wpexplorer"></i></h1>
           {loading ? (
             <div className="text-center">
               <div className="spinner-border text-primary" role="status">
