@@ -6,7 +6,7 @@ const SideMenu = () => {
   const role = localStorage.getItem('role'); // Get the user's role from localStorage
 
   return (
-    <div className="side-menu bg-light border-end" style={{ width: '250px', minHeight: '100vh' }}>
+    <div className="side-menu bg-light border-end" style={{ width: '250px', height: '420px' }}>
       <div className="p-3">
         <h4 className="mb-4">Menu</h4>
         <ul className="nav flex-column">

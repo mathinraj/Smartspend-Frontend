@@ -1,111 +1,115 @@
-/* Calendar Page Styles */
+/* src/styles/Calendar.css */
 .calendar-page {
-    padding: 20px;
-  }
-  
-  /* Calendar Container */
-  .calendar-container {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  
-  /* React Calendar Custom Styles */
+  padding: 20px;
+}
+
+.calendar-css {
+  color: white;
+}
+
+/* Calendar Container */
+.calendar-container {
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* React Calendar Custom Styles */
+.react-calendar {
+  width: 100%;
+  max-width: 1100px;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.react-calendar__navigation {
+  background-color: rgba(0, 128, 43, 0.8); /* Semi-transparent green */
+  color: white;
+  padding: 10px;
+  border-radius: 8px 8px 0 0;
+}
+
+.react-calendar__navigation button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.react-calendar__navigation button:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Light hover effect */
+}
+
+.react-calendar__navigation button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.react-calendar__month-view__weekdays {
+  background-color: rgba(240, 240, 240, 0.8); /* Semi-transparent light gray */
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  text-align: center;
+  font-weight: 500;
+  color: #333;
+}
+
+.react-calendar__tile {
+  padding: 1.5em 0.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  transition: all 0.3s ease;
+}
+
+.react-calendar__tile:hover {
+  background-color: rgba(240, 240, 240, 0.8); /* Semi-transparent hover background */
+}
+
+.react-calendar__tile--active {
+  background-color: rgba(0, 128, 43, 0.8); /* Semi-transparent green */
+  color: white;
+}
+
+.react-calendar__tile--now {
+  background-color: rgba(248, 249, 250, 0.8); /* Semi-transparent light gray */
+  color: #333;
+}
+
+/* Daily Summary (Income and Expense) */
+.daily-summary {
+  font-size: 12px;
+  text-align: center;
+}
+
+.daily-summary .income {
+  color: green;
+}
+
+.daily-summary .expense {
+  color: red;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .react-calendar {
-    width: 100%;
-    max-width: 1100px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
+    font-size: 14px;
   }
-  
-  .react-calendar__navigation {
-    background-color: #00802b; /* Green */
-    color: white;
-    padding: 10px;
-    border-radius: 8px 8px 0 0;
-  }
-  
-  .react-calendar__navigation button {
-    background-color: transparent;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .react-calendar__navigation button:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* Light hover effect */
-  }
-  
-  .react-calendar__navigation button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .react-calendar__month-view__weekdays {
-    background-color: #f0f0f0; /* Light gray */
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .react-calendar__month-view__weekdays__weekday {
-    text-align: center;
-    font-weight: 500;
-    color: #333;
-  }
-  
+
   .react-calendar__tile {
-    padding: 1.5em 0.5em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #ddd;
-    background-color: white;
-    transition: all 0.3s ease;
+    padding: 1em 0.3em;
   }
-  
-  .react-calendar__tile:hover {
-    background-color: #f0f0f0; /* Light gray on hover */
-  }
-  
-  .react-calendar__tile--active {
-    background-color: #00802b; /* Green */
-    color: white;
-  }
-  
-  .react-calendar__tile--now {
-    background-color: #f8f9fa; /* Light gray */
-    color: #333;
-  }
-  
-  /* Daily Summary (Income and Expense) */
-  .daily-summary {
-    font-size: 12px;
-    text-align: center;
-  }
-  
-  .daily-summary .income {
-    color: green;
-  }
-  
-  .daily-summary .expense {
-    color: red;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .react-calendar {
-      font-size: 14px;
-    }
-  
-    .react-calendar__tile {
-      padding: 1em 0.3em;
-    }
-  }
+}

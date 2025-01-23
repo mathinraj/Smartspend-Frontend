@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+// import 'react-calendar/dist/Calendar.css';
 import api from '../services/api';
 import SideMenu from '../components/SideMenu';
 import '../styles/Calendar.css'
@@ -57,7 +57,7 @@ const CalendarPage = () => {
   };
 
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="text-css d-flex flex-column min-vh-100">
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4 d-flex flex-column">

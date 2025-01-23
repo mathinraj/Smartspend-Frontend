@@ -43,7 +43,7 @@ const BudgetsPage = () => {
   };
 
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="text-css d-flex flex-column min-vh-100">
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4">

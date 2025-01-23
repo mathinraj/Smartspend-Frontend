@@ -1,25 +1,45 @@
 /* src/styles/global.css */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.text-css {
+  color: white;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
+  font-family: "Ubuntu", sans-serif; /* Set Ubuntu as the default font */
+  font-weight: 400;
+  font-style: normal;
+  background-image: url('../assets/Images/background_home.jpg'); /* Add background image */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Ensure the background is fixed */
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.ubuntu-regular {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .navbar {
   margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.8) !important; /* Semi-transparent background for navbar */
 }
 
 .footer {
-  margin-top: 20px;
-  background-color: #f8f9fa;
+  color: white;
+  margin-top: auto; /* Push footer to the bottom */
+  background-color: rgba(255, 255, 255, 0) !important; /* Semi-transparent background for footer */
   padding: 10px 0;
   text-align: center;
-}
-
-.form-container {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .card {
@@ -27,15 +47,21 @@ body {
   border: none;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for cards */
 }
 
-.progress {
-  height: 20px;
-  border-radius: 10px;
+/* Ensure all headings and text use Ubuntu */
+h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select {
+  font-family: "Ubuntu", sans-serif;
 }
 
-.progress-bar {
-  border-radius: 10px;
+/* Other existing styles... */
+
+.form-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary {
@@ -67,40 +93,6 @@ body {
 
 .alert {
   margin-bottom: 20px;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-/* src/styles/global.css */
-
-/* Logo Hover Effect with Border */
-.navbar-brand img {
-  transition: all 0.3s ease; /* Smooth transition for hover effects */
-  border: 2px solid transparent; /* Transparent border by default */
-  border-radius: 8px; /* Rounded corners for the border */
-  padding: 4px; /* Add padding to create space around the logo */
-}
-
-.navbar-brand img:hover {
-  border-color: #28a745; /* Green border on hover (matches Bootstrap's success color) */
-  box-shadow: 0 0 4px rgba(40, 167, 69, 0.5); /* Green shadow for a glowing effect */
-}
-
-.progress {
-  height: 20px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.progress-bar {
-  height: 100%;
-  background-color: #007bff;
-  transition: width 0.3s ease;
 }
 
 /* Custom styles for the calendar */
@@ -168,7 +160,3 @@ body {
 .react-calendar__navigation button:hover {
   background-color: rgba(255, 255, 255, 0.1); /* Light hover effect */
 }
-
-/* .react-calendar__navigation__label:hover{
-  background-color: #dc3545 !important;
-} */
