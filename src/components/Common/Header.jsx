@@ -3,18 +3,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/Images/Logo_Smartspend.svg';
 import "../../styles/Header.css";
 
-const Header = ({ className }) => {
+const Header = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
   const username = localStorage.getItem('username');
 
   const handleLogout = () => {
     localStorage.removeItem('role');
     localStorage.removeItem('username');
-    navigate('/login');
+    setIsLoggedIn(false); // Update login state
+    navigate('/login'); // Redirect to login page after logout
   };
 
   return (
-    <nav className={`navbar navbar-expand-lg navbar-light ${className || 'bg-light'}`}>
+    <nav className={`navbar navbar-expand-lg navbar-light bg-light`}>
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           <img

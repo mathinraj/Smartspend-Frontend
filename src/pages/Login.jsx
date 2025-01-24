@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import '../styles/Login.css'
+import '../styles/Login.css';
 
-const LoginPage = () => {
+const LoginPage = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -16,10 +16,11 @@ const LoginPage = () => {
       const response = await api.post('/login', { username, password });
 
       if (response.status === 200) {
+        // Store username and role in localStorage
         localStorage.setItem('username', username);
-        localStorage.setItem('password', password);
         localStorage.setItem('role', response.data.role);
-        navigate('/dashboard');
+        setIsLoggedIn(true); // Update login state
+        navigate('/dashboard'); // Redirect to dashboard after login
       } else {
         setError('Login failed. Please try again.');
       }

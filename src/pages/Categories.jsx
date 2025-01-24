@@ -4,7 +4,7 @@ import CategoryList from '../components/Categories/CategoryList';
 import CategoryPieChart from '../components/Categories/CategoryPieChart';
 import SideMenu from '../components/SideMenu';
 import api from '../services/api';
-import '../styles/Categories.css'
+import '../styles/Categories.css';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
@@ -13,6 +13,10 @@ const CategoriesPage = () => {
   const [editingCategory, setEditingCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Number of categories per page
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +49,9 @@ const CategoriesPage = () => {
   const handleDelete = (id) => {
     setCategories(categories.filter((c) => c.id !== id));
   };
+
+  // Paginate function
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Prepare data for the expense pie chart
   const expensePieChartData = categories
@@ -127,8 +134,14 @@ const CategoriesPage = () => {
               )}
               <CategoryList
                 categories={categories}
-                onEdit={setEditingCategory}
+                onEdit={(category) => {
+                  setEditingCategory(category);
+                  setShowForm(true);
+                }}
                 onDelete={handleDelete}
+                currentPage={currentPage}
+                itemsPerPage={itemsPerPage}
+                paginate={paginate}
               />
 
               {/* Display pie charts side by side */}

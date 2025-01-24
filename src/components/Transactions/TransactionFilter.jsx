@@ -9,7 +9,11 @@ const TransactionFilter = ({ onFilter, onClear }) => {
 
   const handleFilter = (e) => {
     e.preventDefault();
-    onFilter({ category, startDate, endDate, transactionType });
+
+    // Convert the category filter input to lowercase for case-insensitive comparison
+    const categoryFilter = category.toLowerCase();
+
+    onFilter({ category: categoryFilter, startDate, endDate, transactionType });
     setIsFilterApplied(true);
   };
 

@@ -10,52 +10,55 @@ import Users from './pages/Users';
 import Calendar from './pages/Calendar';
 import ProtectedRoute from './components/ProtectedRoute';
 
-const AppRoutes = () => {
+const AppRoutes = ({ setIsLoggedIn }) => {
   return (
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/transactions"
-          element={
-            <ProtectedRoute>
-              <Transactions />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/categories"
-          element={
-            <ProtectedRoute requiredRole="ADMIN">
-              <Categories />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/budgets"
-          element={
-            <ProtectedRoute requiredRole="ADMIN">
-              <Budgets />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/users"
-          element={
-            <ProtectedRoute requiredRole="ADMIN">
-              <Users />
-            </ProtectedRoute>
-          }
-        />
-        <Route
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route
+        path="/login"
+        element={<Login setIsLoggedIn={setIsLoggedIn} />}
+      />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/transactions"
+        element={
+          <ProtectedRoute>
+            <Transactions />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/categories"
+        element={
+          <ProtectedRoute requiredRole="ADMIN">
+            <Categories />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/budgets"
+        element={
+          <ProtectedRoute requiredRole="ADMIN">
+            <Budgets />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/users"
+        element={
+          <ProtectedRoute requiredRole="ADMIN">
+            <Users />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/calendar"
         element={
           <ProtectedRoute>
@@ -63,7 +66,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      </Routes>
+    </Routes>
   );
 };
 

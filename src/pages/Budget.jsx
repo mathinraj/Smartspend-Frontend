@@ -3,7 +3,7 @@ import BudgetForm from '../components/Budgets/BudgetForm';
 import BudgetList from '../components/Budgets/BudgetList';
 import SideMenu from '../components/SideMenu';
 import api from '../services/api';
-import '../styles/Budget.css'
+import '../styles/Budget.css';
 
 const BudgetsPage = () => {
   const [budgets, setBudgets] = useState([]);
@@ -79,7 +79,10 @@ const BudgetsPage = () => {
               )}
               <BudgetList
                 budgets={budgets}
-                onEdit={setEditingBudget}
+                onEdit={(budget) => {
+                  setEditingBudget(budget);
+                  setShowForm(true);
+                }}
                 onDelete={handleDelete}
               />
             </>

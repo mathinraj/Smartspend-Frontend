@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import ExpenseForm from '../components/Expenses/ExpenseForm';
 import SideMenu from '../components/SideMenu';
 import api from '../services/api';
-import '../styles/Transactions.css'
+import '../styles/Transactions.css';
 import TransactionFilter from '../components/Transactions/TransactionFilter';
 
 const TransactionsPage = () => {
   const [expenses, setExpenses] = useState([]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingExpense, setEditingExpense] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,20 +17,25 @@ const TransactionsPage = () => {
   const itemsPerPage = 5;
 
   useEffect(() => {
-    const fetchExpenses = async () => {
+    const fetchData = async () => {
       try {
-        const response = await api.get('/expenses/get/all');
-        const sortedExpenses = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const [expensesResponse, categoriesResponse] = await Promise.all([
+          api.get('/expenses/get/all'),
+          api.get('/category/get/all'),
+        ]);
+
+        const sortedExpenses = expensesResponse.data.sort((a, b) => new Date(b.date) - new Date(a.date));
         setExpenses(sortedExpenses);
         setFilteredExpenses(sortedExpenses);
+        setCategories(categoriesResponse.data);
       } catch (err) {
-        setError(err.message || 'Failed to fetch expenses. Please try again later.');
+        setError(err.message || 'Failed to fetch data. Please try again later.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchExpenses();
+    fetchData();
   }, []);
 
   const handleSubmit = (expense) => {
@@ -64,7 +70,9 @@ const TransactionsPage = () => {
 
   const handleFilter = ({ category, startDate, endDate, transactionType }) => {
     const filtered = expenses.filter((expense) => {
-      const matchesCategory = category ? expense.categoryName === category : true;
+      const matchesCategory = category
+        ? expense.categoryName.toLowerCase().includes(category.toLowerCase()) // Case-insensitive comparison
+        : true;
       const matchesStartDate = startDate ? expense.date >= startDate : true;
       const matchesEndDate = endDate ? expense.date <= endDate : true;
       const matchesTransactionType = transactionType
@@ -72,10 +80,10 @@ const TransactionsPage = () => {
           ? expense.amount >= 0
           : expense.amount < 0
         : true;
-
+  
       return matchesCategory && matchesStartDate && matchesEndDate && matchesTransactionType;
     });
-
+  
     const sortedFilteredExpenses = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
     setFilteredExpenses(sortedFilteredExpenses);
     setCurrentPage(1);
@@ -155,7 +163,10 @@ const TransactionsPage = () => {
                         <td>
                           <button
                             className="btn btn-sm btn-primary me-2"
-                            onClick={() => setEditingExpense(expense)}
+                            onClick={() => {
+                              setEditingExpense(expense);
+                              setShowForm(true);
+                            }}
                           >
                             Edit
                           </button>

@@ -30,30 +30,6 @@
   margin-bottom: 20px;
 }
 
-.transaction-filter .form-control {
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-.transaction-filter .btn-primary {
-  background-color: rgba(0, 128, 43, 0.8); /* Semi-transparent green */
-  border: none;
-}
-
-.transaction-filter .btn-primary:hover {
-  background-color: rgba(0, 102, 34, 0.8); /* Semi-transparent darker green */
-}
-
-.transaction-filter .btn-danger {
-  background-color: rgba(220, 53, 69, 0.8); /* Semi-transparent red */
-  border: none;
-}
-
-.transaction-filter .btn-danger:hover {
-  background-color: rgba(167, 29, 42, 0.8); /* Semi-transparent darker red */
-}
-
 /* Transaction Table */
 .transactions-table {
   background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
@@ -91,16 +67,4 @@
 
 .pagination .page-link:hover {
   color: rgba(0, 102, 34, 0.8); /* Semi-transparent darker green */
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .transaction-filter .row > div {
-    margin-bottom: 10px;
-  }
-
-  .transactions-table th,
-  .transactions-table td {
-    padding: 8px;
-  }
 }
