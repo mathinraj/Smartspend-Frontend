@@ -8,10 +8,10 @@ const DashboardPage = () => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const username = localStorage.getItem("username");
+  const username = sessionStorage.getItem("username");
 
   // State for selected month and year
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); //getMonth returns month with 0-indexed
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   // Fetch expenses when the component mounts
@@ -55,7 +55,7 @@ const DashboardPage = () => {
   // Prepare data for the expense pie chart
   const expensePieChartData = filteredExpenses
     .filter((expense) => expense.amount < 0)
-    .reduce((acc, expense) => {
+    .reduce((acc, expense) => { //accumulator to store the total amounts for each category.
       const categoryName = expense.categoryName || "Uncategorized";
       acc[categoryName] = (acc[categoryName] || 0) + Math.abs(expense.amount);
       return acc;
@@ -66,7 +66,7 @@ const DashboardPage = () => {
       name: category,
       value: expensePieChartData[category],
     }))
-    .filter((entry) => entry.value > 0);
+    .filter((entry) => entry.value > 0); // removes category with no expense
 
   // Prepare data for the income pie chart
   const incomePieChartData = filteredExpenses
@@ -84,13 +84,6 @@ const DashboardPage = () => {
     }))
     .filter((entry) => entry.value > 0);
 
-  // Function to handle month and year change
-  const handleMonthYearChange = (e) => {
-    const [year, month] = e.target.value.split("-");
-    setSelectedMonth(parseInt(month, 10));
-    setSelectedYear(parseInt(year, 10));
-  };
-
   return (
     <div className="text-css d-flex flex-column min-vh-100">
       <div className="d-flex flex-grow-1">
@@ -104,9 +97,7 @@ const DashboardPage = () => {
 
           {loading ? (
             <div className="text-center">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
+              <div className="spinner-border text-white" />      
             </div>
           ) : error ? (
             <div className="alert alert-danger">{error}</div>

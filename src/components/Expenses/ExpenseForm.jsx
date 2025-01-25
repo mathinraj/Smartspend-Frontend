@@ -94,7 +94,7 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
         setCategoryId('');
         setUserId('');
         setDate('');
-        setTransactionType('expense'); // Reset to expense
+        setTransactionType('expense'); 
       }
       setError('');
     } catch (err) {

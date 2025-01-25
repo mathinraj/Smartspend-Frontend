@@ -43,7 +43,7 @@ const UserForm = ({ user, onSubmit, onCancel }) => {
       setError('');
     } catch (err) {
       setError(user ? 'Failed to update user. Please try again.' : 'Failed to create user. Please try again.');
-      toast.error(error);
+      toast.error('Action failed');
       console.error('Error:', err);
     }
   };

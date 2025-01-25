@@ -16,7 +16,7 @@ const UserList = ({ users, onEdit, onDelete }) => {
       toast.success('User deleted successfully');
       onDelete(id); // Call the onDelete callback to update the UI
     } catch (err) {
-      toast.error('Failed to delete user. Please try again.');
+      toast.error('Failed to delete user');
       console.error('Error deleting user:', err);
     }
   };

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import CategoryForm from '../components/Categories/CategoryForm';
-import CategoryList from '../components/Categories/CategoryList';
-import CategoryPieChart from '../components/Categories/CategoryPieChart';
-import SideMenu from '../components/SideMenu';
-import api from '../services/api';
-import '../styles/Categories.css';
+import React, { useState, useEffect } from "react";
+import CategoryForm from "../components/Categories/CategoryForm";
+import CategoryList from "../components/Categories/CategoryList";
+import CategoryPieChart from "../components/Categories/CategoryPieChart";
+import SideMenu from "../components/SideMenu";
+import api from "../services/api";
+import "../styles/Categories.css";
+import { toast } from "react-toastify";
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
@@ -12,7 +13,7 @@ const CategoriesPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,13 +22,13 @@ const CategoriesPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categoriesResponse = await api.get('/category/get/all');
-        const expensesResponse = await api.get('/expenses/get/all');
+        const categoriesResponse = await api.get("/category/get/all");
+        const expensesResponse = await api.get("/expenses/get/all");
         setCategories(categoriesResponse.data);
         setExpenses(expensesResponse.data);
       } catch (err) {
-        setError('Failed to fetch data. Please try again later.');
-        console.error('Error fetching data:', err);
+        setError("Failed to fetch data. Please try again later.");
+        console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
       }
@@ -38,7 +39,9 @@ const CategoriesPage = () => {
 
   const handleSubmit = (category) => {
     if (editingCategory) {
-      setCategories(categories.map((c) => (c.id === category.id ? category : c)));
+      setCategories(
+        categories.map((c) => (c.id === category.id ? category : c))
+      );
       setEditingCategory(null);
     } else {
       setCategories([...categories, category]);
@@ -46,8 +49,14 @@ const CategoriesPage = () => {
     setShowForm(false);
   };
 
-  const handleDelete = (id) => {
-    setCategories(categories.filter((c) => c.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await api.delete(`/category/delete/${id}`);
+      setCategories(categories.filter((c) => c.id !== id));
+      toast.success("Category deleted successfully");
+    } catch (err) {
+      setError(err.message || "Failed to delete expense. Please try again.");
+    }
   };
 
   // Paginate function
@@ -66,7 +75,10 @@ const CategoriesPage = () => {
         );
       });
 
-      const totalExpense = categoryExpenses.reduce((sum, expense) => sum + Math.abs(expense.amount), 0);
+      const totalExpense = categoryExpenses.reduce(
+        (sum, expense) => sum + Math.abs(expense.amount),
+        0 //initial value of the accumulator sum
+      );
 
       return {
         name: category.name,
@@ -88,7 +100,10 @@ const CategoriesPage = () => {
         );
       });
 
-      const totalIncome = categoryIncomes.reduce((sum, expense) => sum + expense.amount, 0);
+      const totalIncome = categoryIncomes.reduce(
+        (sum, expense) => sum + expense.amount,
+        0
+      );
 
       return {
         name: category.name,
@@ -102,12 +117,12 @@ const CategoriesPage = () => {
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4">
-          <h1><i className="fa-solid fa-icons"></i> Category Corner</h1>
+          <h1>
+            <i class="fa-solid fa-bars"></i> Category Corner
+          </h1>
           {loading ? (
             <div className="text-center">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
+              <div className="spinner-border text-white" />
             </div>
           ) : error ? (
             <div className="alert alert-danger">{error}</div>
@@ -120,7 +135,7 @@ const CategoriesPage = () => {
                   setShowForm(!showForm);
                 }}
               >
-                {showForm ? 'Hide Form' : 'Add Category'}
+                {showForm ? "Hide Form" : "Add Category"}
               </button>
               {showForm && (
                 <CategoryForm

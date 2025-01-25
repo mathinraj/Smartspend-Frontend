@@ -1,6 +1,13 @@
-import React from 'react';
+import React from "react";
 
-const CategoryList = ({ categories, onEdit, onDelete, currentPage, itemsPerPage, paginate }) => {
+const CategoryList = ({
+  categories,
+  onEdit,
+  onDelete,
+  currentPage,
+  itemsPerPage,
+  paginate,
+}) => {
   // Calculate the categories to display for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -43,13 +50,19 @@ const CategoryList = ({ categories, onEdit, onDelete, currentPage, itemsPerPage,
       {/* Pagination */}
       <nav>
         <ul className="pagination">
-          {Array.from({ length: Math.ceil(categories.length / itemsPerPage) }, (_, i) => (
-            <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-              <button onClick={() => paginate(i + 1)} className="page-link">
-                {i + 1}
-              </button>
-            </li>
-          ))}
+          {Array.from(
+            { length: Math.ceil(categories.length / itemsPerPage) },
+            (_, i) => (
+              <li
+                key={i + 1}
+                className={`page-item ${currentPage === i + 1 ? "active" : ""}`}
+              >
+                <button onClick={() => paginate(i + 1)} className="page-link">
+                  {i + 1}
+                </button>
+              </li>
+            )
+          )}
         </ul>
       </nav>
     </div>

@@ -60,6 +60,7 @@ const CategoryForm = ({ category, onSubmit, onCancel }) => {
           : 'Failed to create category. Please try again.'
       );
       console.error('Error:', err);
+      toast.error('Action failed !');
     }
   };
 

@@ -10,7 +10,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); //To prevent defsult form submission behavior i.e. pg reloading
 
     try {
       const response = await axios.post('http://localhost:8123/login', { username, password });

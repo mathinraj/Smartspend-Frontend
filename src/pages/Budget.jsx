@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BudgetForm from '../components/Budgets/BudgetForm';
 import BudgetList from '../components/Budgets/BudgetList';
 import SideMenu from '../components/SideMenu';
-import axios from 'axios'; // Use axios directly instead of the api.js file
+import axios from 'axios';
 import '../styles/Budget.css';
 
 const BudgetsPage = () => {
@@ -45,6 +45,7 @@ const BudgetsPage = () => {
 
   const handleDelete = (id) => {
     setBudgets(budgets.filter((b) => b.id !== id));
+    
   };
 
   return (
@@ -55,9 +56,7 @@ const BudgetsPage = () => {
           <h1>Budget Compass <i className="fa-regular fa-compass"></i></h1>
           {loading ? (
             <div className="text-center">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
+              <div className="spinner-border text-white" />
             </div>
           ) : error ? (
             <div className="alert alert-danger">{error}</div>

@@ -13,7 +13,7 @@ const UsersPage = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const username = localStorage.getItem("username");
+  const username = sessionStorage.getItem("username");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -22,7 +22,7 @@ const UsersPage = () => {
         setUsers(response.data);
       } catch (err) {
         setError('Failed to fetch users. Please try again later.');
-        toast.error('Failed to fetch users. Please try again later.');
+        toast.error('Failed to fetch users');
         console.error('Error fetching users:', err);
       } finally {
         setLoading(false);
@@ -56,15 +56,13 @@ const UsersPage = () => {
       <div className="d-flex flex-grow-1">
         <SideMenu />
         <div className="flex-grow-1 p-4">
-          <h1>Basecamp <i className="fa-solid fa-person-rifle"></i></h1>
+          <h1>Basecamp <i class="fa-solid fa-person-military-rifle"></i></h1>
           <p>
             Welcome to Basecamp, <strong>{username}</strong>!
           </p>
           {loading ? (
             <div className="text-center">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
+              <div className="spinner-border text-white" />
             </div>
           ) : error ? (
             <div className="alert alert-danger">{error}</div>

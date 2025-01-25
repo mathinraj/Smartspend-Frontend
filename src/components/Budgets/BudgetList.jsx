@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import api from '../../services/api'; // Import the Axios instance
+import React, { useEffect, useState } from "react";
+import api from "../../services/api";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BudgetList = ({ budgets, onEdit, onDelete }) => {
   const [categories, setCategories] = useState([]); // State to store categories
@@ -10,10 +12,10 @@ const BudgetList = ({ budgets, onEdit, onDelete }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await api.get('/category/get/all'); // Fetch all categories
+        const response = await api.get("/category/get/all"); // Fetch all categories
         setCategories(response.data);
       } catch (err) {
-        console.error('Error fetching categories:', err);
+        console.error("Error fetching categories:", err);
       }
     };
 
@@ -23,15 +25,16 @@ const BudgetList = ({ budgets, onEdit, onDelete }) => {
   // Function to get category name by categoryId
   const getCategoryName = (categoryId) => {
     const category = categories.find((cat) => cat.id === categoryId);
-    return category ? category.name : 'N/A'; // Return category name or 'N/A' if not found
+    return category ? category.name : "N/A"; // Return category name or 'N/A' if not found
   };
 
   const handleDelete = async (id) => {
     try {
       await api.delete(`/budget/delete/${id}`); // Send a DELETE request
       onDelete(id); // Call the onDelete callback to update the UI
+      toast.success("Budget deleted successfully !");
     } catch (err) {
-      console.error('Error deleting budget:', err);
+      console.error("Error deleting budget:", err);
     }
   };
 
@@ -59,7 +62,8 @@ const BudgetList = ({ budgets, onEdit, onDelete }) => {
           <tbody>
             {currentBudgets.map((budget) => (
               <tr key={budget.id}>
-                <td>{getCategoryName(budget.categoryId)}</td> {/* Use getCategoryName */}
+                <td>{getCategoryName(budget.categoryId)}</td>{" "}
+                {/* Use getCategoryName */}
                 <td>₹{budget.amount}</td>
                 <td>{budget.startDate}</td>
                 <td>{budget.endDate}</td>
@@ -86,13 +90,19 @@ const BudgetList = ({ budgets, onEdit, onDelete }) => {
       {/* Pagination */}
       <nav>
         <ul className="pagination">
-          {Array.from({ length: Math.ceil(budgets.length / itemsPerPage) }, (_, i) => (
-            <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-              <button onClick={() => paginate(i + 1)} className="page-link">
-                {i + 1}
-              </button>
-            </li>
-          ))}
+          {Array.from(
+            { length: Math.ceil(budgets.length / itemsPerPage) },
+            (_, i) => (
+              <li
+                key={i + 1}
+                className={`page-item ${currentPage === i + 1 ? "active" : ""}`}
+              >
+                <button onClick={() => paginate(i + 1)} className="page-link">
+                  {i + 1}
+                </button>
+              </li>
+            )
+          )}
         </ul>
       </nav>
     </div>

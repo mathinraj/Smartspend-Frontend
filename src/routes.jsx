@@ -1,23 +1,20 @@
 // src/routes.jsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Transactions from './pages/Transactions';
-import Categories from './pages/Categories';
-import Budgets from './pages/Budget';
-import Users from './pages/Users';
-import Calendar from './pages/Calendar';
-import ProtectedRoute from './components/ProtectedRoute';
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Transactions from "./pages/Transactions";
+import Categories from "./pages/Categories";
+import Budgets from "./pages/Budget";
+import Users from "./pages/Users";
+import Calendar from "./pages/Calendar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const AppRoutes = ({ setIsLoggedIn }) => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route
-        path="/login"
-        element={<Login setIsLoggedIn={setIsLoggedIn} />}
-      />
+      <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
       <Route
         path="/dashboard"
         element={
