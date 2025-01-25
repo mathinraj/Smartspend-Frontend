@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom'; // Use NavLink instead of Link
-import '../styles/SideMenu.css'
+import '../styles/SideMenu.css';
 
 const SideMenu = () => {
-  const role = localStorage.getItem('role'); // Get the user's role from localStorage
+  const role = sessionStorage.getItem('role'); // Get the user's role from sessionStorage
 
   return (
     <div className="side-menu bg-light border-end" style={{ width: '250px', height: '420px' }}>

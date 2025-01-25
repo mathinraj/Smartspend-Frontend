@@ -40,14 +40,31 @@ const TransactionsPage = () => {
 
   const handleSubmit = (expense) => {
     let updatedExpenses;
-
+  
+    // Find the category name based on the categoryId
+    const category = categories.find((cat) => cat.id === expense.categoryId);
+    const categoryName = category ? category.name : 'Uncategorized';
+  
+    // Add the categoryName to the expense object
+    const expenseWithCategoryName = {
+      ...expense,
+      categoryName,
+    };
+  
     if (editingExpense) {
-      updatedExpenses = expenses.map((e) => (e.id === expense.id ? expense : e));
+      // Update an existing expense
+      updatedExpenses = expenses.map((e) =>
+        e.id === expense.id ? expenseWithCategoryName : e
+      );
     } else {
-      updatedExpenses = [...expenses, expense];
+      // Add a new expense
+      updatedExpenses = [...expenses, expenseWithCategoryName];
     }
-
+  
+    // Sort the expenses by date
     const sortedExpenses = updatedExpenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+    // Update the state
     setExpenses(sortedExpenses);
     setFilteredExpenses(sortedExpenses);
     setEditingExpense(null);

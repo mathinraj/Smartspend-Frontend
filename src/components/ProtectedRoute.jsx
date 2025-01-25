@@ -3,10 +3,11 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children, requiredRole }) => {
-  const role = localStorage.getItem('role'); // Get the user's role from localStorage
+  const token = sessionStorage.getItem('token'); // Get the token from sessionStorage
+  const role = sessionStorage.getItem('role'); // Get the user's role from sessionStorage
 
   // If the user is not logged in, redirect to the login page
-  if (!role) {
+  if (!token) {
     return <Navigate to="/login" />;
   }
 

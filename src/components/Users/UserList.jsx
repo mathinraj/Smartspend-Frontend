@@ -1,6 +1,26 @@
 import React from 'react';
+import axios from 'axios'; // Use axios directly
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserList = ({ users, onEdit, onDelete }) => {
+  const handleDelete = async (id) => {
+    const token = sessionStorage.getItem('token'); // Get the JWT token
+
+    try {
+      await axios.delete(`http://localhost:8123/users/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the JWT token
+        },
+      });
+      toast.success('User deleted successfully');
+      onDelete(id); // Call the onDelete callback to update the UI
+    } catch (err) {
+      toast.error('Failed to delete user. Please try again.');
+      console.error('Error deleting user:', err);
+    }
+  };
+
   return (
     <div className="table-responsive user-list">
       <table className="table table-striped">
@@ -25,7 +45,7 @@ const UserList = ({ users, onEdit, onDelete }) => {
                 </button>
                 <button
                   className="btn btn-sm btn-danger"
-                  onClick={() => onDelete(user.id)}
+                  onClick={() => handleDelete(user.id)}
                 >
                   Delete
                 </button>

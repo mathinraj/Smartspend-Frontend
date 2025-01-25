@@ -5,11 +5,12 @@ import "../../styles/Header.css";
 
 const Header = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
-  const username = localStorage.getItem('username');
+  const username = sessionStorage.getItem('username');
 
   const handleLogout = () => {
-    localStorage.removeItem('role');
-    localStorage.removeItem('username');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('role');
+    sessionStorage.removeItem('username');
     setIsLoggedIn(false); // Update login state
     navigate('/login'); // Redirect to login page after logout
   };

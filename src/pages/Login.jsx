@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import axios from 'axios';
 import '../styles/Login.css';
 
 const LoginPage = ({ setIsLoggedIn }) => {
@@ -13,12 +13,13 @@ const LoginPage = ({ setIsLoggedIn }) => {
     e.preventDefault();
 
     try {
-      const response = await api.post('/login', { username, password });
+      const response = await axios.post('http://localhost:8123/login', { username, password });
 
       if (response.status === 200) {
-        // Store username and role in localStorage
-        localStorage.setItem('username', username);
-        localStorage.setItem('role', response.data.role);
+        // Store token and role in sessionStorage
+        sessionStorage.setItem('token', response.data.token);
+        sessionStorage.setItem('role', response.data.role);
+        sessionStorage.setItem('username', username);
         setIsLoggedIn(true); // Update login state
         navigate('/dashboard'); // Redirect to dashboard after login
       } else {

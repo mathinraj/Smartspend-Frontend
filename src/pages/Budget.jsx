@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BudgetForm from '../components/Budgets/BudgetForm';
 import BudgetList from '../components/Budgets/BudgetList';
 import SideMenu from '../components/SideMenu';
-import api from '../services/api';
+import axios from 'axios'; // Use axios directly instead of the api.js file
 import '../styles/Budget.css';
 
 const BudgetsPage = () => {
@@ -15,7 +15,12 @@ const BudgetsPage = () => {
   useEffect(() => {
     const fetchBudgets = async () => {
       try {
-        const response = await api.get('/budget/get/all');
+        const token = sessionStorage.getItem('token'); // Get the JWT token from sessionStorage
+        const response = await axios.get('http://localhost:8123/budget/get/all', {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the JWT token in the request headers
+          },
+        });
         setBudgets(response.data);
       } catch (err) {
         setError('Failed to fetch budgets. Please try again later.');

@@ -11,10 +11,10 @@ const App = () => {
   // State to track login status
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Check login status on initial render and when localStorage changes
+  // Check login status on initial render and when sessionStorage changes
   useEffect(() => {
-    const username = localStorage.getItem('username');
-    setIsLoggedIn(username !== null);
+    const token = sessionStorage.getItem('token');
+    setIsLoggedIn(token !== null);
   }, []);
 
   return (

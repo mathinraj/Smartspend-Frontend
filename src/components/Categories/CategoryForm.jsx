@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../../services/api';
+import axios from 'axios'; // Use axios directly
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,23 +18,47 @@ const CategoryForm = ({ category, onSubmit, onCancel }) => {
     const categoryData = { name };
 
     try {
+      const token = sessionStorage.getItem('token'); // Get the JWT token
       let response;
+
       if (category) {
-        response = await api.put(`/category/update/${category.id}`, categoryData);
+        // Update existing category
+        response = await axios.put(
+          `http://localhost:8123/category/update/${category.id}`,
+          categoryData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include the JWT token
+            },
+          }
+        );
         toast.success('Category updated successfully');
       } else {
-        response = await api.post('/category/add', categoryData);
+        // Add new category
+        response = await axios.post(
+          'http://localhost:8123/category/add',
+          categoryData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include the JWT token
+            },
+          }
+        );
         toast.success('Category added successfully');
       }
 
-      onSubmit(response.data);
+      onSubmit(response.data); // Call the onSubmit callback with the updated/added category
 
       if (!category) {
-        setName('');
+        setName(''); // Reset the form if adding a new category
       }
       setError('');
     } catch (err) {
-      setError(category ? 'Failed to update category. Please try again.' : 'Failed to create category. Please try again.');
+      setError(
+        category
+          ? 'Failed to update category. Please try again.'
+          : 'Failed to create category. Please try again.'
+      );
       console.error('Error:', err);
     }
   };

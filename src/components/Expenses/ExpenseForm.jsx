@@ -48,21 +48,21 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Validate input fields
     if (!amount || !description || !categoryId || !userId || !date) {
       setError('All fields are required.');
       return;
     }
-
+  
     if (isNaN(amount) || amount <= 0) {
       setError('Amount must be a positive number.');
       return;
     }
-
+  
     // Adjust the amount based on transaction type
     const adjustedAmount = transactionType === 'income' ? Math.abs(amount) : -Math.abs(amount);
-
+  
     // Create the expense object
     const expenseData = {
       amount: adjustedAmount, // Use adjusted amount
@@ -71,7 +71,7 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
       userId: parseInt(userId),
       date,
     };
-
+  
     try {
       let response;
       if (expense) {
@@ -83,10 +83,10 @@ const ExpenseForm = ({ expense, onSubmit, onCancel }) => {
         response = await api.post('/expenses/add', expenseData);
         toast.success('Expense added successfully');
       }
-
+  
       // Call the onSubmit callback with the created/updated expense
       onSubmit(response.data);
-
+  
       // Clear the form fields
       if (!expense) {
         setAmount('');
