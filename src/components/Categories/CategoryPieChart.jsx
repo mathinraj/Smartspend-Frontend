@@ -1,7 +1,7 @@
 import React from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
-// Define a consistent color scheme
+// Defining a consistent color scheme
 const COLORS = [
   "#0088FE",
   "#00C49F",
@@ -47,13 +47,13 @@ const CategoryPieChart = ({ data, type }) => {
           >
             {filteredData.map((entry, index) => (
               <Cell
-                key={`cell-${index}`}   // sets a unique key for each cell
+                key={`cell-${index}`} // sets a unique key for each cell
                 fill={COLORS[index % COLORS.length]}
               />
             ))}
           </Pie>
-          <Tooltip />  {/*displays the data value when a slice is hovered */}
-          <Legend />   {/*adds a legend to the chart */}
+          <Tooltip /> {/*displays the data value when a slice is hovered */}
+          <Legend /> {/*adds a legend to the chart */}
         </PieChart>
       </div>
     </div>
